@@ -1,0 +1,130 @@
+#!/bin/python
+from collections import Counter
+
+import numpy as np
+import cv2
+import sys
+import os
+
+def uint8tobits(array):
+    bits = []
+    for byte in array:
+        byte_bin = bin(byte)[2:]
+        byte_bin = [np.uint8(0)]*(8-len(byte_bin)) + list(byte_bin)
+        for bit in byte_bin:
+            bits.append(bit)
+
+    return np.array(bits).astype(int)
+
+
+def encode(filename, input_image, output_image):
+    # Read the code as list of bits
+    code = []
+    with open(filename, 'rb') as f:
+        for byte in f.read():
+            code.append(byte)
+    code = uint8tobits(code)
+
+    # Encode the code into the image
+    image = cv2.imread(input_image).astype(int)
+    image_original = image.copy()
+    height, width, nchannels = image.shape
+    image = image.ravel()#.reshape(-1, nchannels)
+    print(image[:10].ravel())
+    num_bits = len(code)
+    print('code')
+    print(code[:100], num_bits)
+
+    """
+    channel = None
+    for c in range(nchannels+1):
+        if np.max(image[:,c]) < 255:
+            channel = c
+            break
+    if channel == None:"""
+    if np.max(image[:num_bits]) >= 255:
+        print('The input image is not compatible for encoding')
+        exit(1)
+
+    if num_bits > image.shape[0]:
+        print("Number of bits in code exceed the image resolution.")
+        exit(1)
+
+    print(image[:10].ravel())
+    # print(orig[:10])
+    image_original[:,:,0].ravel()[:num_bits] = 1# code
+    # print(image.reshape(height, width, nchannels)[:,:,0].ravel()[:20])
+    cv2.imwrite(output_image, image_original)
+
+    image2 = cv2.imread(output_image)[:,:,0].ravel()[:num_bits]
+    print(image_original[:,:,0].ravel()[:20])
+    print(image2[:20])
+
+def decode(input_image, input_image_original, output_filename, code_len):
+    # Reading of the code
+    num_bits = code_len*8
+    image = cv2.imread(input_image)[:,:,0].ravel()[:num_bits]
+    print(image[:10])
+
+    image_original = cv2.imread(input_image_original)[:,:,0].ravel()[:num_bits]
+    print(image[:20], image_original[:20])
+    code = image - image_original
+    print(code[:100],code.shape, code_len)
+    # print(image[:10], cv2.imread(input_image_original)[:,:,0].ravel()[:10])
+    # for i in num_bits:
+    #     if image_original[i] > image[i]:
+    #         print(i)
+    # code = image[:num_bits]- cv2.imread(input_image_original)[:,:,0].ravel()[:num_bits]
+    # c = Counter(code)
+    # print(c)
+
+    # Conversion and writting of the code
+    # code = [np.uint8(int('0b' + ''.join(byte.astype(str)), 2)) for byte in np.split(code, code_len)]
+    with open(output_filename, 'wb') as f:
+        for byte in code:
+            f.write(byte)
+
+if __name__=="__main__":
+    args = sys.argv[1:]
+
+    if args[0] == '-h' or args[0] == '--help':
+        doc = """This program can be used to embed secret code as a small file into an image.
+The resulting image will be the same as the original for the human eye and it is impossible to recover the code without the original image.
+
+Usage:
+    stegonographer encode filename input_image output_image:
+    encode the file into the input image and write the resulting image as output_image
+
+    or
+
+    stegonographer decode input_image input_image_original output_filename code_len:
+    decode the code contained in input_image (using the original image) and write it as output_filename.
+    The code_len argument is the length in bytes of the file containing the code, this can be obtained by running the following command:
+    $ wc -c filename | cut -d' ' -f1"""
+        print(doc)
+        exit(0)
+    if args[0] == 'encode':
+        if len(args) != 4:
+            print("Wrong number of agrument")
+            exit(1)
+
+        filename, input_image, output_image = args[1:]
+        if os.path.exists(output_image):
+            print(f"{output_image} already exists")
+            exit(1)
+
+        encode(filename, input_image, output_image)
+        exit(0)
+
+    if args[0] == 'decode':
+        if len(args) != 5:
+            print("Wrong number of argument")
+            exit(1)
+
+        input_image, input_image_original, output_filename, code_len = args[1:]
+        if os.path.exists(output_filename):
+            print(f"{output_filename} already exists")
+            exit(1)
+
+        decode(input_image, input_image_original, output_filename, int(code_len))
+        exit(0)
