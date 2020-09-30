@@ -43,7 +43,7 @@ for_window [instance="dropdown_term"] resize set 850 540
 
 exec --no-startup-id urxvt -name dropdown_calc -e bpython
 exec --no-startup-id urxvt -name dropdown_term
-exec --no-startup-id 'i3-msg [instance="dropdown_*"] move absolute position 0 0'
+exec --no-startup-id 'i3-msg [instance="dropdown_*"] move position center'
 
 ## Other Windows Properties ##
 for_window [class="Pavucontrol"] floating enable
@@ -161,7 +161,7 @@ bindsym $mod+x						exec --no-startup-id "urxvt -e htop"
 #bindsym $mod++Shift+x
 
 bindsym $mod+c						exec --no-startup-id "clipmenu ; i3-msg 'workspace back_and_forth' ; i3-msg 'workspace back_and_forth'"
-bindsym $mod++Shift+c			[instance="dropdown_*"] move position center
+bindsym $mod++Shift+c			move position center
 
 bindsym $mod+v						exec --no-startup-id pavucontrol
 #bindsym $mod+Shift+v
