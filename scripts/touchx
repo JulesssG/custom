@@ -1,4 +1,9 @@
 #!/bin/zsh
+# Script useful to quickly create executable files.
+# Usages are:
+# touchx filename: create an empty executable filename
+# touchx env filename: create an empty executable filename,
+#											 with the bash-bang for env already written.
 
 file="${2-$1}"
 if [ -e "$file" ]

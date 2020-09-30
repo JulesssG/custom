@@ -1,4 +1,10 @@
 #!/bin/sh
+# blc (stands for bluetooth-connect) is a script
+# that tries to automate the bluetooth connection
+# to known device with bluetoothctl.
+# It takes the name of the device as argument,
+# otherwise it will prompt for it.
+
 dev="$1"
 if [ -z $dev ]
 then

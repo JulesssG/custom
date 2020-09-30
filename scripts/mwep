@@ -1,11 +1,8 @@
 #!/bin/sh
-# Script allowing to efficiently move
-# downloaded files to epfl directory
+# Script allowing to efficiently move # downloaded files to epfl directory
 #
-# This scripts can accept exactly one option
-# or it will behave as if they were none.
-# In its default behavior, it will prompt
-# for the user to choose the file.
+# This scripts can accept exactly one option # or it will behave as if they were none.
+# In its default behavior, it will prompt # for the user to choose the file.
 
 # Available options:
 # -r: move the most recent files

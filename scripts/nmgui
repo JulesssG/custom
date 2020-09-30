@@ -1,4 +1,7 @@
 #!/bin/bash
+# Script allowing to efficiently connect
+# to a wifi that has complicated setup.
+
 nm-applet &>/dev/null &
 stalonetray &>/dev/null
 killall nm-applet

@@ -1,4 +1,7 @@
 #!/bin/sh
+# Silent compiler for latex file.
+# Provided the name of the latex file (in *.tex format),
+# it will compile it and remove all auxiliary files.
 
 if [ $# -ne 1 ]
 then

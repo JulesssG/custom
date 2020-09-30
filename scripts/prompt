@@ -1,3 +1,4 @@
 #!/bin/sh
+# Simple prompt script using dmenu
 
 [ "$(printf "Yes\\nNo" | dmenu -i -p "$1" -sb darkred -sf black -nf gray)" = "Yes" ] && $2

@@ -1,4 +1,5 @@
 #!/bin/bash
+# Script that change the sound output to hdmi if it is detected
 
 export PATH=/usr/bin
 

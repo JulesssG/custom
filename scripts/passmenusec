@@ -1,4 +1,6 @@
 #!/bin/sh
+# Wrapper around passmenu that avoid writting
+# the copied passwords to plain text.
 
 clipctl disable
 passmenu

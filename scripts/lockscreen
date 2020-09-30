@@ -1,4 +1,5 @@
 #!/bin/sh
+# Custom lock screen using i3lock
 
 i3lock --blur=10 -e --indicator -k \
 				--pass-media-keys \
@@ -17,5 +18,3 @@ i3lock --blur=10 -e --indicator -k \
 				--datestr="%A, %e %b"
 
 xset dpms force off
-
-

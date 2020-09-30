@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Script useful to open any file from the terminal so that it
+# is independent of it (can close the terminal).
 
 if [[ "$1" =~ ".*\.R?md" ]]
 then

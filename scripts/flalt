@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Fast file launcher for i3 using fzf
+
 source $HOME/.profile
 
 cd $HOME

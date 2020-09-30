@@ -1,4 +1,6 @@
 #!/bin/sh
+# Script that uses the i3fullscreenfocus script to be able to switch
+# focus in i3 without leaving the fullscreen mode
 
 if [ "$1" = 'left' ]
 then

@@ -1,4 +1,6 @@
 #!/bin/python
+# Utility script for i3focus. This script will return 1 if
+# the focused window is in fullscreen mode and 0 otherwise.
 
 import json
 import subprocess

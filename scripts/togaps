@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# Got code from https://pastebin.com/DLv1yZR6
+# Inspired from https://pastebin.com/DLv1yZR6
+# This will toggle the gaps of i3. If it is zero,
+# the gaps are set to I3_DEFAULT_GAPS or 20 if it
+# is not defined.
 
 BASE_GAPS=-20
 
@@ -8,6 +11,7 @@ workspace=$(i3-msg -t get_workspaces | jq -r '.[] | if .["focused"] then .["name
 # Get current inner gap size. (0 means default)
 inner_gaps=$(i3-msg -t get_tree | jq -r 'recurse(.nodes[]) | if .type == "workspace" and .name == "'"$workspace"'" then .gaps.inner else empty end')
 
+I3_DEFAULT_GAPS=${I3_DEFAULT_GAPS:-20}
 if [[ $inner_gaps == $BASE_GAPS ]]; then
 	i3-msg "gaps inner current set $I3_DEFAULT_GAPS; gaps outer current set 0"
 else
