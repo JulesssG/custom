@@ -1,0 +1,5 @@
+#!/bin/sh
+
+clipctl disable
+passmenu
+clipctl enable
