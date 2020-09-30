@@ -226,6 +226,13 @@ function grsa() {
 function gsjoin() {
 	/usr/bin/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dFIXEDMEDIA -dPDFFitPage -sPAPERSIZE=a4 -sOutputFile="$1" "${@:2}"
 }
+function pass() {
+	/usr/bin/pass $@
+	if [[ $?  -eq 0 && "$@" =~ '-c' ]]
+	then
+		clipdel -d "$(clippaste)"
+	fi
+}
 # Not working
 function gsopt(){
 	if ! [[ "$1" =~ ".*\.pdf" ]]
