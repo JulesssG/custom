@@ -3,6 +3,7 @@ https?://localhost:8888/*
 https?://127.0.0.1:8888/*
 https?://www.facebook.com/*	jkl
 https?://www.youtube.com/*	ml123456789
+https?://*/jupyterhub/*
 
 # Custom key mappings
 map J nextTab
@@ -31,3 +32,5 @@ sp: https://docs.scipy.org/doc/scipy/reference/search.html?q=%s&check_keywords=y
 nx: https://networkx.github.io/documentation/stable/search.html?q=%s&check_keywords=yes&area=default
 mp: https://matplotlib.org/search.html?q=%s
 torch: https://pytorch.org/docs/stable/search.html?q=%s&check_keywords=yes&area=default
+dle: https://www.linguee.com/english-french/search?query=%s&source=english
+dlf: https://www.linguee.com/french-english/search?query=%s&source=french
