@@ -13,8 +13,9 @@ export SCRIPTS_PATH="$CUSTOM_PATH/scripts"
 export PATH="$(find "$SCRIPTS_PATH" -type d -name '.git' -prune -o -type d -name '*' | grep -v "^\.git$\|^$SCRIPTS_PATH/progress$" | tr '\n' ':')$PATH"
 export BROWSER='/usr/bin/firefox'
 export FZF_DEFAULT_OPTS='--bind=ctrl-h:backward-word,ctrl-l:forward-word'
-export NLTK_DATA="$HOME/documents/python-package-data/nltk_data"
-export SCIKIT_LEARN_DATA="$HOME/documents/python-package-data/scikit_learn_data"
+export PYTHON_DATA="$HOME/.local/python-package-data"
+export NLTK_DATA="$PYTHON_DATA_DIR/nltk_data"
+export SCIKIT_LEARN_DATA="$PYTHON_DATA_DIR/scikit_learn_data"
 
 export I3_DEFAULT_GAPS=20
 export CM_SELECTIONS="clipboard"
