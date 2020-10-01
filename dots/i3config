@@ -123,7 +123,7 @@ bindsym $mod+o						[con_id="__focused__" instance="^(?!dropdown_).*$"] resize g
 #bindsym $mod+Shift+o
 
 bindsym $mod+p						[con_id="__focused__" instance="^(?!dropdown_).*$"] resize grow width 10 px
-bindsym $mod+Shift+p			exec --no-startup-id "passmenusec ; i3-msg 'workspace back_and_forth' ; i3-msg 'workspace back_and_forth'; $SCRIPTS_PATH/clipmenulastdel"
+bindsym $mod+Shift+p			exec --no-startup-id "passmenusec ; i3-msg 'workspace back_and_forth' ; i3-msg 'workspace back_and_forth'"
 
 bindsym $mod+a						split v
 bindsym $mod+Shift+a			split h
