@@ -109,6 +109,7 @@ alias gll="git log --oneline --graph --format=format:'%C(bold blue)%h%C(reset) -
 ## EPFL
 ### cds
 alias ze="cd $EPFL_DIR"
+alias ze2="cd $EPFL_DIR/../ma2/"
 alias zep="cd $EPFL_DIR/project"
 alias zef="cd $EPFL_DIR/foundations"
 alias zem="cd $EPFL_DIR/md"

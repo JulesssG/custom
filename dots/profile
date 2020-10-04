@@ -19,7 +19,6 @@ export SCIKIT_LEARN_DATA="$PYTHON_DATA_DIR/scikit_learn_data"
 
 export I3_DEFAULT_GAPS=20
 export CM_SELECTIONS="clipboard"
-export CM_DEBUG=0
 export CM_OUTPUT_CLIP=0
 export CM_MAX_CLIPS=100
 export CM_HISTLENGTH=10
