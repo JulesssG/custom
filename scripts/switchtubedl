@@ -1,0 +1,37 @@
+#!/bin/python
+# Cloux' script to download video from switch-tube drive
+# Must be logged to tequila on firefox
+# Usage: switchtubedl url outputname.mp4
+
+import requests
+import browser_cookie3
+import sys
+import re
+from clint.textui import progress
+
+
+page_url = sys.argv[1]
+fname = sys.argv[2]
+
+session = requests.session()
+cookies = browser_cookie3.firefox(domain_name=".switch.ch")
+session.cookies.update(cookies)
+session.headers.update({
+    'referer': "https://tube.switch.ch/",  # set referer
+    "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                   "AppleWebKit/537.36 (KHTML, like Gecko) "
+                   "Chrome/74.0.3729.169 "
+                   "Safari/537.36")  # somehow standard User-Agent
+})
+page = session.get(page_url).text
+vid_url = re.search(r"<source [^>]* src=\"([^\"]*1080[^\"]*)\"", page).group(1)
+vid_url = vid_url.replace("&amp;", "&")
+vid = session.get(vid_url, stream=True)
+if vid.status_code == 200:
+    with open(fname, "wb") as f:
+        total_size = int(vid.headers.get('content-length'))
+        for chunk in progress.bar(vid.iter_content(chunk_size=1024),
+                                  expected_size=total_size/1024 + 1):
+            if chunk:
+                f.write(chunk)
+                f.flush()
