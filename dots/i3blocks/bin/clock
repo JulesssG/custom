@@ -1,4 +1,9 @@
 #!/bin/bash
+# Customize clock:
+# - https://github.com/dmedvinsky/gsimplecal/issues/28
+# Original post:
+# - https://www.reddit.com/r/i3wm/comments/5iv5mt/calendar_popup_when_clicking_i3bar_clock/
+
 
 # Should toggle the gsimplecal but doesn't work
 # Work when runned from terminal (test with clock_test from
