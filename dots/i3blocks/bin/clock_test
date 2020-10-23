@@ -1,12 +1,12 @@
 #!/bin/bash
-
-# Should toggle the gsimplecal but doesn't work
-# Work when runned from terminal (test with clock_test from
-# terminal), the problem may come from the BLOCK_BUTTON variable
+BLOCK_BUTTON="s"
 if [[ -n "$BLOCK_BUTTON" ]]; then
+	echo 1
 	if [[ -n "$(ps aux | grep 'gsimplecal' | grep -v 'grep')" ]]; then
+		echo 2
 		kill "$(ps aux | grep 'gsimplecal' | grep -v 'grep' | awk '{print $2}')"
 	else
+		echo 3
 		gsimplecal &
 	fi
 fi
