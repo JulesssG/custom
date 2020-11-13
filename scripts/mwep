@@ -1,8 +1,8 @@
 #!/bin/sh
-# Script allowing to efficiently move # downloaded files to epfl directory
-#
-# This scripts can accept exactly one option # or it will behave as if they were none.
-# In its default behavior, it will prompt # for the user to choose the file.
+# Script allowing to efficiently move downloaded files to epfl directory
+
+# This scripts can accept exactly one option or it will behave as if they were none.
+# In its default behavior, it will prompt for the user to choose the file.
 
 # Available options:
 # -r: move the most recent files
@@ -21,12 +21,13 @@ then
 			tail -n1 |\
 			sed 's,\s\+, ,g' |\
 			cut -d' ' -f9-)"
-	fi
-
-	if [ "$1" = '-m' ]
+	elif [ "$1" = '-m' ]
 	then
 		multiple_option=1
 		file="$(ls $HOME/downloads | fzf -m | sed 's, ,\ ,g')"
+	else
+		echo 'Invalid option, falling back to default behavior'
+		file=$(ls $prefix_file | dmenu -p "file: ")
 	fi
 else
 	file=$(ls $prefix_file | dmenu -p "file: ")
