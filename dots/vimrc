@@ -124,6 +124,7 @@ call vundle#end()
 	nnoremap 		<C-s> <Nop>
 	noremap			0 ^
 	noremap 		^ 0
+	nnoremap		n	nzzzv
 	noremap			<leader>ac :setlocal spell!<CR>
 	nnoremap		<leader>h :nohlsearch<CR>
 	nnoremap		<leader>i :b#<CR>
