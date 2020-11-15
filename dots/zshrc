@@ -166,6 +166,7 @@ alias pipu="pip3 install --user -U"
 alias pipua="pip3 list --outdated | sed 1,2d | sed 's/\(\S*\).*$/\1/' | xargs -n1 pip install --user -U"
 alias ytdla="youtube-dl -x --audio-format mp3 -o '%(title)s.%(ext)s'"
 alias condasource="source /opt/miniconda3/etc/profile.d/conda.sh"
+alias pubip="curl ifconfig.me"
 
 # Functions
 ## Misc
