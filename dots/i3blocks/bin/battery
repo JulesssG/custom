@@ -14,26 +14,32 @@ capacity=${capacity%.*}
 status0=$(cat /sys/class/power_supply/BAT0/status)
 status1=$(cat /sys/class/power_supply/BAT1/status)
 
-battery_emoji="🔋"
-status_charging="⚡"
-status_low="⚠️"
+if [ $capacity -ge 60 ];then
+	battery_emoji=""
+elif [ $capacity -ge 35 ]; then
+	battery_emoji=""
+else
+	battery_emoji=""
+fi
+status_charging=""
+status_low=""
 
 crit_icon='/usr/share/icons/Adwaita/16x16/status/dialog-warning-symbolic.symbolic.png'
 
 # Test status
 if [ "$status0" = "Charging" ] || [ "$status1" = "Charging" ]
 then
-	printf "%s%s%s\n" "$capacity%" "$battery_emoji" "$status_charging"
+	printf "%s %s %s\n" "$capacity%" "$battery_emoji" "$status_charging"
 elif [ "$capacity" -gt "$low_threshold" ]
 then
-	printf "%s%s\n" "$capacity%" "$battery_emoji"
+	printf "%s %s\n" "$capacity%" "$battery_emoji"
 elif [ "$capacity" -le "$crit_threshold" ]
 then
 	if [[ $capacity -le $alert_threshold ]]
 	then
 		dunstify -u critical -r 30004 -i $crit_icon "Critical battery"
 	fi
-	printf "%s%s%s\n\n#ff0000\n" "$capacity%" "$battery_emoji" "$status_low"
+	printf "%s %s %s\n\n#ff0000\n" "$capacity%" "$battery_emoji" "$status_low"
 else
-	printf "%s%s\n\n#ff0000\n" "$capacity%" "$battery_emoji"
+	printf "%s %s\n\n#ff0000\n" "$capacity%" "$battery_emoji"
 fi
