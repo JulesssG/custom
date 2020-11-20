@@ -111,8 +111,8 @@ alias gll="git log --oneline --graph --format=format:'%C(bold blue)%h%C(reset) -
 alias ze="cd $EPFL_DIR"
 alias ze2="cd $EPFL_DIR/../ma2/"
 alias zep="cd $EPFL_DIR/project"
-alias zef="cd $EPFL_DIR/foundations"
-alias zem="cd $EPFL_DIR/md"
+alias zef="cd $EPFL_DIR/fds"
+alias zem="cd $EPFL_DIR/mod"
 alias zes="cd $EPFL_DIR/sv-c++"
 ### Misc
 alias todo="v ${EPFL_DIR}/todo.md"
