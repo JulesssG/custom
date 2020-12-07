@@ -7,7 +7,7 @@ wlan_status=$(cat /sys/class/net/w*/operstate)
 [[ $(cat /sys/class/net/e*/operstate) = "up" ]] && status_icon=""
 if [ -z $status_icon ]
 then
-	status_icon=""
+	status_icon=""
 	printf "$status_icon\n"
 	exit 0
 fi
