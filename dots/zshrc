@@ -29,8 +29,8 @@ bindkey '^O'	kill-line
 bindkey '^H'	vi-backward-word
 bindkey 'Od'	vi-backward-word
 bindkey 'h'	backward-char
-bindkey '^J'	history-beginning-search-forward
-bindkey '^K'	history-beginning-search-backward
+bindkey '^J'	history-search-forward
+bindkey '^K'	history-search-backward
 bindkey 'l'	forward-char
 bindkey '^L'	vi-forward-word
 bindkey 'Oc'	vi-forward-word
