@@ -63,10 +63,13 @@ set $ws9 "9"
 set $ws10 "10"
 
 ## Special Key Bindings ##
+bindsym Ctrl+D [con_id="__focused__" instance="^dropdown_calc$"] scratchpad show
+
 bindsym button4								nop
 bindsym button5								nop
 bindsym $mod+Return 					exec urxvt
-bindsym $mod+Tab							workspace next
+bindsym $mod+Tab							move workspace to output right
+bindsym $mod+Shift+Tab		focus output right
 #bindsym $mod+Backspace				workspace prev
 bindsym $mod+space 						focus mode_toggle
 bindsym $mod+Shift+space			[con_id="__focused__" instance="^(?!dropdown_).*$"] floating toggle
