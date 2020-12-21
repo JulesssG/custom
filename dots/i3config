@@ -63,7 +63,7 @@ set $ws9 "9"
 set $ws10 "10"
 
 ## Special Key Bindings ##
-bindsym Ctrl+D [con_id="__focused__" instance="^dropdown_calc$"] scratchpad show
+# bindsym Ctrl+D [con_id="__focused__" instance="^(?dropdown_).*$"] nop
 
 bindsym button4								nop
 bindsym button5								nop
