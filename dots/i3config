@@ -136,7 +136,7 @@ bindsym $mod+Shift+s			[instance="dropdown_calc"] scratchpad show
 bindsym $mod+Alt+s				mark --add "swapee"; mode "swap"
 
 
-bindsym $mod+d						exec --no-startup-id "urxvt -e $SCRIPTS_PATH/flalt"
+bindsym $mod+d						exec --no-startup-id "urxvt -e $SCRIPTS_PATH/fl"
 bindsym $mod+Shift+d			exec --no-startup-id i3-dmenu-desktop
 
 bindsym $mod+f 						fullscreen toggle

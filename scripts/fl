@@ -1,35 +1,24 @@
 #!/bin/zsh
 # Fast file launcher for i3 using fzf
 
+source $HOME/.profile
+
 cd $HOME
 directory=$(pwd)
+export FZF_DEFAULT_COMMAND="find * -path '*/\.*' -prune -o -path 'musics/*' -prune -o -type f -print -o -type l -print 2> /dev/null"
 files=$(fzf -m)
-cd -
 
-pdfs=""
-multiple_pdfs=""
-
+mpvs=()
 while read -r file; do
+	[ -z "$file" ] && continue
+	ftype="$(xdg-mime query filetype $file)"
 	file="'$file'"
-
-	if [ "$(head -c 4 "$file")" = "%PDF" ]; then
-		if [ -z "$pdfs" ]; then
-			pdfs="$file"
-		else
-			pdfs="$pdfs $file"
-			multiple_pdfs="true"
-		fi
+	if [[ "$ftype" =~ '^video.*' ]]
+	then
+		mpvs+="$file"
 	else
-		i3-msg exec xdg-open "$file"
+		i3-msg "exec  o $HOME/$file"
 	fi
 done <<< "$files"
 
-if [ -n "$pdfs" ]; then
-	if [ -z "$multiple_pdfs" ]; then
-		i3-msg exec zathura $pdfs
-	else
-		i3-msg exec "tabbed -c zathura "$pdfs" -e"
-	fi
-fi
-
-
+i3-msg "exec  mpv ${mpvs[@]}"
