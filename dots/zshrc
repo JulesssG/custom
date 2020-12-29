@@ -37,6 +37,8 @@ bindkey 'Oc'	vi-forward-word
 bindkey 'e'	edit-command-line
 bindkey 'm' run-help
 ## Replace arrows by vim bindings in menu selection
+zstyle ':completion:*' menu-select
+zmodload zsh/complist
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -M menuselect 'k' vi-up-line-or-history
@@ -275,4 +277,4 @@ function playm() {
 # Save last directory
 precmd() { pwd > /tmp/LASTDIRSAVE}
 
-source /home/jules/.config/broot/launcher/bash/br
+[ -f /home/jules/.config/broot/launcher/bash/br ] && source /home/jules/.config/broot/launcher/bash/br
