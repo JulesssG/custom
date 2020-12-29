@@ -1,44 +1,61 @@
 #!/bin/sh
 # updatesl along with supdatesl (dmenu, xorg) for correct automatic permissions?
-# Add xprofile, Xdefault->resources
-source $HOME/.profile
-TMP=/tmp/updatesl-backups
-mkdir $TMP 2>/dev/null
-rm $TMP/*
-ZSH_CUSTOM="$ZSH/custom"
 
-# Xorg
-ln -s $DOTS_PATH/xorg-90-touchpad.conf /etc/X11/xorg.conf.d/90-touchpad.conf
+if [ ! -f $HOME/custom/dots/profile ];then
+	echo "Must have custom directory to use this script"
+	exit 1
+fi
+source $HOME/custom/dots/profile
+TMP="$(mktemp -d /tmp/arch-install-helper.backup.XXXX)"
+echo "Backup at $TMP"
+
+# Get oh-my-zsh
+if [ -d $ZSH ]; then
+	read -p "Oh-my-zsh folder exists, Delete it? " -n 1 -r
+	echo    # (optional) move to a new line
+	if [[ $REPLY =~ ^[Yy]$ ]]
+	then
+		rm -r $ZSH
+	else
+		exit 1
+	fi
+fi
+KEEP_ZSHRC=yes RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+ln -fs $DOTS_PATH/mytheme.zsh-theme $ZSH/custom/themes/mytheme.zsh-theme
+
+# Touchpad settings
+mv /etc/X11/xorg.conf.d/70-synaptics.conf $TMP
+sudo cat /usr/share/X11/xorg.conf.d/70-synaptics.conf $DOTS_PATH/xorg-70-synaptics.conf > /etc/X11/xorg.conf.d/70-synaptics.conf
 
 # Executables
 mv /usr/bin/dmenu $TMP
 ln -s $SCRIPTS_PATH/dmenu /usr/bin/dmenu
 
-# Theme zsh
-mv $ZSH_CUSTOM/themes/mytheme.zsh-theme $TMP
-ln -s $DOTS_PATH/mytheme.zsh-theme $ZSH_CUSTOM/themes/mytheme.zsh-theme
 
 # Config files in home
-mv $HOME/{.profile,.zprofile,.zshrc,.xinitrc,.Xdefaults,.vimrc,.gitconfig} $TMP
-ln -s $DOTS_PATH/profile $HOME/.profile
-ln -s $DOTS_PATH/zprofile $HOME/.zprofile
-ln -s $DOTS_PATH/zshrc $HOME/.zshrc
-ln -s $DOTS_PATH/xinitrc $HOME/.xinitrc
-ln -s $DOTS_PATH/xdefaults $HOME/.Xdefaults
-ln -s $DOTS_PATH/vimrc $HOME/.vimrc
-ln -s $DOTS_PATH/gitconfig $HOME/.gitconfig
-chown jules:wheel $HOME/{.profile,.zprofile,.zshrc,.xinitrc,.Xdefaults,.vimrc,.gitconfig}
+homenames=('.profile') #'.zprofile' '.xprofile' '.zshrc' '.xinitrc' '.Xressources' '.vimrc' '.gitconfig')
+dotsnames=('profile') #'zprofile' 'xprofile' 'zshrc' 'xinitrc' 'xressources' 'vimrc' 'gitconfig')
+for i in {1..${#homenames[@]}}; do
+	mv $HOME/$homenames $TMP
+	ln -s $DOTS_PATH/$dotsnames $HOME/$homenames
+	#chown jules:wheel $HOME/$homenames
+	if [ $? -eq 0 ]; then
+		echo "$homenames -> $dotsnames: Done"
+	else
+		echo "$homenames -> $dotsnames: Failed"
+	fi
+done
 
 # Config files in .config
-mkdir $HOME/.config/archey3 2>/dev/null
-mv $HOME/.config/{archey3/archey3.conf,dunst/dunstrc,i3/config,qutebrowser/config.py,qutebrowser/quickmarks,ranger/rc.conf,ranger/rifle.conf,zathura/zathurarc} $TMP
-ln -s $DOTS_PATH/archey3.conf $HOME/.config/archey3/archey3.conf
-ln -s $DOTS_PATH/dunstrc $HOME/.config/dunst/dunstrc
-ln -s $DOTS_PATH/i3config $HOME/.config/i3/config
-ln -s $DOTS_PATH/quteconfig $HOME/.config/qutebrowser/config.py
-ln -s $DOTS_PATH/qutequicks $HOME/.config/qutebrowser/quickmarks
-ln -s $DOTS_PATH/ranger-rc.conf $HOME/.config/ranger/rc.conf
-ln -s $DOTS_PATH/ranger-rifle.conf $HOME/.config/ranger/rifle.conf
-ln -s $DOTS_PATH/zathurarc $HOME/.config/zathura/zathurarc
-chown jules:wheel $HOME/.config/{archey3/archey3.conf,dunst/dunstrc,i3/config,qutebrowser/config.py,qutebrowser/quickmarks,ranger/rc.conf,ranger/rifle.conf,zathura/zathurarc}
-
+confignames=('archey3/archey3.conf' 'dunst/dunstrc') #'i3/config' 'i3blocks' 'ranger/rc.conf' 'ranger/rifle.conf' 'zathura/zathurarc')
+dotsnames=('archey3.conf' 'dunstrc') #'i3config' 'i3blocks' 'ranger-rc.conf' 'ranger-rifle.conf' 'zathurarc')
+for i in {1..${#confignames[@]}}; do
+	mv $HOME/.config/$confignames $TMP
+	ln -s $DOTS_PATH/$dotsnames $HOME/.config/$confignames
+	#chown jules:wheel $HOME/.config/$confignames
+	if [ $? -eq 0 ]; then
+		echo "$confignames -> $dotsnames: Done"
+	else
+		echo "$confignames -> $dotsnames: Failed"
+	fi
+done
