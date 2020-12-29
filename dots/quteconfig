@@ -13,8 +13,8 @@ config.bind('spt', 'set input.spatial_navigation true')
 config.bind('spf', 'set input.spatial_navigation false')
 
 config.unbind('wf')
-config.bind('wft', 'set content.windowed_fullscreen true')
-config.bind('wff', 'set content.windowed_fullscreen false')
+config.bind('wft', 'set content.fullscreen.window true')
+config.bind('wff', 'set content.fullscreen.window false')
 
 config.bind('apt', 'set content.autoplay true')
 config.bind('apf', 'set content.autoplay false')
