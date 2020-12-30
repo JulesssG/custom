@@ -1,0 +1,70 @@
+#!/bin/zsh
+HOME='/home/jules'
+
+if [ ! -f $HOME/custom/dots/profile ];then
+	echo "Must have custom directory in home to use this script"
+	exit 1
+fi
+source $HOME/custom/dots/profile
+TMP="$(mktemp -d /tmp/arch-install-helper.backup.XXXX)"
+echo "Backup at $TMP"
+
+# Get oh-my-zsh
+if [ -d $ZSH ]; then
+	vared -p "Oh-my-zsh folder exists, Delete it? " -c reply
+	if [[ $reply =~ "^[yY](es)?$" ]]
+	then
+		rm -r $ZSH
+		KEEP_ZSHRC=yes RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+		chown -R jules:wheel $ZSH
+	fi
+fi
+sudo -u jules -g wheel ln -fs $DOTS_PATH/mytheme.zsh-theme $ZSH/custom/themes/mytheme.zsh-theme
+
+# Get zsh plugins
+dest="$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+[ ! -d $dest ] && sudo -u jules -g wheel git clone https://github.com/zsh-users/zsh-autosuggestions.git $dest
+echo
+dest="$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+[ ! -d $dest ] && sudo -u jules -g wheel git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $dest
+echo
+
+# Touchpad settings
+mv /etc/X11/xorg.conf.d/70-synaptics.conf $TMP > /dev/null
+sudo cat /usr/share/X11/xorg.conf.d/70-synaptics.conf $DOTS_PATH/xorg-70-synaptics.conf | sudo tee /etc/X11/xorg.conf.d/70-synaptics.conf > /dev/null
+
+# Executables
+mv /usr/bin/dmenu $TMP > /dev/null
+ln -s $SCRIPTS_PATH/dmenu /usr/bin/dmenu
+
+# Config files in home
+homenames=('.profile' '.zprofile' '.xprofile' '.zshrc' '.xinitrc' '.Xresources' '.vimrc' '.gitconfig')
+dotsnames=('profile' 'zprofile' 'xprofile' 'zshrc' 'xinitrc' 'xresources' 'vimrc' 'gitconfig')
+for i in {1..${#homenames[@]}}; do
+	mv $HOME/$homenames[$i] $TMP > /dev/null
+	sudo -u jules -g wheel ln -s $DOTS_PATH/$dotsnames[$i] $HOME/$homenames[$i]
+	if [ $? -eq 0 ]; then
+		echo "$homenames[$i] -> $dotsnames[$i]: Done"
+	else
+		echo "$homenames[$i] -> $dotsnames[$i]: Failed"
+	fi
+done
+
+# Config files in .config
+confignames=('archey3/archey3.conf' 'dunst/dunstrc' 'i3/config' 'i3blocks' 'ranger/rc.conf' 'ranger/rifle.conf' 'zathura/zathurarc')
+dotsnames=('archey3.conf' 'dunstrc') #'i3config' 'i3blocks' 'ranger-rc.conf' 'ranger-rifle.conf' 'zathurarc')
+for i in {1..${#confignames[@]}}; do
+	c="$HOME/.config/$confignames[$i]"
+	d="$DOTS_PATH/$dotsnames[$i]"
+	mv $c $TMP > /dev/null
+	sudo -u jules -g wheel mkdir -p ${c%/*}
+	sudo -u jules -g wheel ln -s $d $c
+	if [ $? -eq 0 ]; then
+		echo "$confignames[$i] -> $dotsnames[$i]: Done"
+	else
+		echo "$confignames[$i] -> $dotsnames[$i]: Failed"
+	fi
+done
+
+# Install Vundle
+[ -d $HOME/.vim/bundle/Vundle.vim ] || sudo -u jules -g wheel git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
