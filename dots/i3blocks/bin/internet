@@ -12,11 +12,12 @@ then
 	exit 0
 fi
 
-name=$(iw dev wlp4s0 link | grep 'SSID' | sed 's/^\s*SSID: //')
+device="$(iw dev | grep -i 'interface w' | grep -o 'wl\w\+')"
+name="$(iw dev $device link | grep 'SSID' | sed 's/^\s*SSID: //')"
 [ $(wc -c <<< $name) -gt 22 ] && other="$(cut -c 1-19 <<< $name)..."
 name="$name "
 
-signal="$(iw dev wlp4s0 link | grep 'signal' | sed -e 's/^\s*signal: //' -e 's/\s//') "
+signal="$(iw dev $device link | grep 'signal' | sed -e 's/^\s*signal: //' -e 's/\s//') "
 signal="$signal "
 
 signal_num=$(grep -P -o '\d+' <<< $signal)

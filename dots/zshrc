@@ -1,14 +1,21 @@
-source /home/jules/.profile # Oh-My-Zsh
-ZSH_THEME="mytheme"
-_Z_DATA="$HOME/.cache/z/z_data"
-plugins=(
-	z
-  zsh-autosuggestions
-	colored-man-pages
-	zsh-syntax-highlighting
-)
-source $ZSH/oh-my-zsh.sh
-ZSH_HIGHLIGHT_STYLES[path]="none" # Do not highlight path url-like
+if [ -d $ZSH ];then
+  source /home/jules/.profile
+  if [ -f $ZSH_CUSTOM/themes/mytheme.zsh-theme ];then
+		ZSH_THEME="mytheme"
+	else
+		ZSH_THEME="robbyrussell"
+	fi
+	plugins=(colored-man-pages)
+	if [ -d $ZSH_CUSTOM/plugins/zsh-autosuggestions ]; then
+		plugins+=zsh-autosuggestions
+	fi
+	if [ -d $ZSH_CUSTOM/plugins/zsh-syntax-highlighting ]; then
+		plugins+=zsh-syntax-highlighting
+	fi
+  source $ZSH/oh-my-zsh.sh
+	[ -d $ZSH_CUSTOM/plugins/zsh-syntax-highlighting ] && ZSH_HIGHLIGHT_STYLES[path]="none"
+fi
+
 
 # General
 eval $( dircolors -b $DOTS_PATH/ls_colors )
@@ -277,4 +284,4 @@ function playm() {
 # Save last directory
 precmd() { pwd > /tmp/LASTDIRSAVE}
 
-[ -f /home/jules/.config/broot/launcher/bash/br ] && source /home/jules/.config/broot/launcher/bash/br
+[ ! -f /home/jules/.config/broot/launcher/bash/br ] || source /home/jules/.config/broot/launcher/bash/br

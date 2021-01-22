@@ -4,15 +4,21 @@ low_threshold=15
 crit_threshold=10
 alert_threshold=3
 
-# Getting the actual percentage of each battery
-capacity0=$(cat /sys/class/power_supply/BAT0/capacity)
-capacity1=$(cat /sys/class/power_supply/BAT1/capacity)
-capacity=$(echo "$capacity0*0.5+$capacity1*0.2" | bc)
-capacity=${capacity%.*}
+if [ $(ls /sys/class/power_supply/ | grep 'BAT' | wc -l) = 2 ]; then
+	# Getting the actual percentage of each battery
+	capacity0=$(cat /sys/class/power_supply/BAT0/capacity)
+	capacity1=$(cat /sys/class/power_supply/BAT1/capacity)
+	capacity=$(echo "$capacity0*0.5+$capacity1*0.2" | bc)
+	capacity=${capacity%.*}
 
-# Getting the statuses
-status0=$(cat /sys/class/power_supply/BAT0/status)
-status1=$(cat /sys/class/power_supply/BAT1/status)
+	# Getting the statuses
+	status0=$(cat /sys/class/power_supply/BAT0/status)
+	status1=$(cat /sys/class/power_supply/BAT1/status)
+	wired=$([ $status0 = 'Charging' -o $status1 = 'Charging' ] && echo 1])
+else
+	capacity=$(cat /sys/class/power_supply/BAT0/capacity)
+	wired=$([ $(cat /sys/class/power_supply/BAT0/status) = 'Charging' ] && echo 1)
+fi
 
 if [ $capacity -ge 60 ];then
 	battery_emoji=""
@@ -27,7 +33,7 @@ status_low=""
 crit_icon='/usr/share/icons/Adwaita/16x16/status/dialog-warning-symbolic.symbolic.png'
 
 # Test status
-if [ "$status0" = "Charging" ] || [ "$status1" = "Charging" ]
+if [ $wired ]
 then
 	printf "%s %s %s\n" "$capacity%" "$battery_emoji" "$status_charging"
 elif [ "$capacity" -gt "$low_threshold" ]

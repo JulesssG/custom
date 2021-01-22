@@ -1,79 +1,80 @@
 let mapleader=" "
 
-" Initialize Vundle
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-	Plugin 'VundleVim/Vundle.vim'
-	Plugin 'ycm-core/YouCompleteMe'
-	Plugin 'djoshea/vim-autoread'
-	Plugin 'tpope/vim-commentary'
-	Plugin 'christoomey/vim-system-copy'
-	Plugin 'kana/vim-textobj-user'
-	Plugin 'kana/vim-textobj-entire'
-	Plugin 'kana/vim-textobj-line'
-	Plugin 'kana/vim-textobj-underscore'
-	Plugin 'michaeljsmith/vim-indent-object'
-	Plugin 'JulesssG/targets.vim'
-	Plugin 'yegappan/taglist'
-	Plugin 'machakann/vim-sandwich'
-	Plugin 'lambdalisue/fern.vim'
-	Plugin 'easymotion/vim-easymotion'
-	Plugin 'tpope/vim-repeat'
-	" Plugin 'unblevable/quick-scope'
-	" Plugin 'christoomey/vim-titlecase'
-	" Plugin 'rhysd/git-messenger.vim'
-call vundle#end()
-" Plugin mappings and options
-	"" Commentary
-	nmap cm gc
+if filereadable(system('echo -n "$HOME/.vim/bundle/Vundle.vim/autoload/vundle.vim"'))
+	" Initialize Vundle
+	set rtp+=~/.vim/bundle/Vundle.vim
+	call vundle#begin()
+		Plugin 'VundleVim/Vundle.vim'
+		Plugin 'ycm-core/YouCompleteMe'
+		Plugin 'djoshea/vim-autoread'
+		Plugin 'tpope/vim-commentary'
+		Plugin 'christoomey/vim-system-copy'
+		Plugin 'kana/vim-textobj-user'
+		Plugin 'kana/vim-textobj-entire'
+		Plugin 'kana/vim-textobj-line'
+		Plugin 'kana/vim-textobj-underscore'
+		Plugin 'michaeljsmith/vim-indent-object'
+		Plugin 'JulesssG/targets.vim'
+		Plugin 'yegappan/taglist'
+		Plugin 'machakann/vim-sandwich'
+		Plugin 'lambdalisue/fern.vim'
+		Plugin 'easymotion/vim-easymotion'
+		Plugin 'tpope/vim-repeat'
+		" Plugin 'unblevable/quick-scope'
+		" Plugin 'christoomey/vim-titlecase'
+		" Plugin 'rhysd/git-messenger.vim'
+	call vundle#end()
+	" Plugin mappings and options
+		"" Commentary
+		nmap cm gc
 
-	"" Titlecase
-	" let g:titlecase_map_keys = 0
-	" nmap <leader>gt <Plug>Titlecase
-	" vmap <leader>gt <Plug>Titlecase
-	" nmap <leader>gT <Plug>TitlecaseLine
+		"" Titlecase
+		" let g:titlecase_map_keys = 0
+		" nmap <leader>gt <Plug>Titlecase
+		" vmap <leader>gt <Plug>Titlecase
+		" nmap <leader>gT <Plug>TitlecaseLine
 
-	"" quickscope
-	" let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-	" let g:ycm_autoclose_preview_window_after_completion=1
+		"" quickscope
+		" let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+		" let g:ycm_autoclose_preview_window_after_completion=1
 
-	"" Sandwich
-	let g:sandwich_no_default_key_mappings = 1
-	let g:operator_sandwich_no_default_key_mappings = 1
-	let g:textobj_sandwich_no_default_key_mappings = 1
-	silent! nmap <unique> Sa <Plug>(operator-sandwich-add)
-	silent! xmap <unique> Sa <Plug>(operator-sandwich-add)
-	silent! omap <unique> Sa <Plug>(operator-sandwich-g@)
-	silent! nmap <unique><silent> Sd <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)
-	silent! nmap <unique><silent> Sr <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)
-	silent! nmap <unique><silent> Sdb <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
-	silent! nmap <unique><silent> Srb <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
+		"" Sandwich
+		let g:sandwich_no_default_key_mappings = 1
+		let g:operator_sandwich_no_default_key_mappings = 1
+		let g:textobj_sandwich_no_default_key_mappings = 1
+		silent! nmap <unique> Sa <Plug>(operator-sandwich-add)
+		silent! xmap <unique> Sa <Plug>(operator-sandwich-add)
+		silent! omap <unique> Sa <Plug>(operator-sandwich-g@)
+		silent! nmap <unique><silent> Sd <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)
+		silent! nmap <unique><silent> Sr <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)
+		silent! nmap <unique><silent> Sdb <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
+		silent! nmap <unique><silent> Srb <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
 
-	"" Fern
-	noremap <leader>e :Fern . -drawer -toggle<CR>
-	function! s:init_fern() abort
-		nmap <buffer> H <Plug>(fern-action-open:split)
-		nmap <buffer> V <Plug>(fern-action-open:vsplit)
-		nmap <buffer> F <Plug>(fern-action-new-file)
-		nmap <buffer> C <Plug>(fern-action-new-copy)
-		nmap <buffer> D <Plug>(fern-action-new-dir)
-		nmap <buffer> S <Plug>(fern-action-hidden-toggle)
-	endfunction
-	augroup fern-custom
-		autocmd! *
-		autocmd FileType fern call s:init_fern()
-	augroup END
+		"" Fern
+		noremap <leader>e :Fern . -drawer -toggle<CR>
+		function! s:init_fern() abort
+			nmap <buffer> H <Plug>(fern-action-open:split)
+			nmap <buffer> V <Plug>(fern-action-open:vsplit)
+			nmap <buffer> F <Plug>(fern-action-new-file)
+			nmap <buffer> C <Plug>(fern-action-new-copy)
+			nmap <buffer> D <Plug>(fern-action-new-dir)
+			nmap <buffer> S <Plug>(fern-action-hidden-toggle)
+		endfunction
+		augroup fern-custom
+			autocmd! *
+			autocmd FileType fern call s:init_fern()
+		augroup END
 
-	"" Easymotion
-	let g:EasyMotion_smartcase = 1
-	let g:EasyMotion_move_highlight = 0
-	nmap <leader>f <Plug>(easymotion-f)
-	nmap <leader>F <Plug>(easymotion-F)
-	nmap <leader>g <Plug>(easymotion-f2)
-	nmap <leader>G <Plug>(easymotion-F2)
-	nmap <leader>; <Plug>(easymotion-next)
-	nmap <leader>, <Plug>(easymotion-prev)
-
+		"" Easymotion
+		let g:EasyMotion_smartcase = 1
+		let g:EasyMotion_move_highlight = 0
+		nmap <leader>f <Plug>(easymotion-f)
+		nmap <leader>F <Plug>(easymotion-F)
+		nmap <leader>g <Plug>(easymotion-f2)
+		nmap <leader>G <Plug>(easymotion-F2)
+		nmap <leader>; <Plug>(easymotion-next)
+		nmap <leader>, <Plug>(easymotion-prev)
+endif
 
 " Basics behavior and appearance
 	set nocompatible
@@ -143,7 +144,6 @@ call vundle#end()
 	nnoremap		<leader><leader>p "+p
 	nnoremap		<leader><leader>P "+P
 	nnoremap		Y y$
-	vnoremap		<C-c> "+y :let @*=@+<CR>
 	vnoremap 		<C-x> "+d :let @*=@+<CR>
 
 
@@ -157,8 +157,6 @@ call vundle#end()
 	inoremap		<C-j> <Down>
 	inoremap		<C-k> <Up>
 	inoremap		<C-l> <Esc>ea
-	inoremap		h 	<C-o>h
-	inoremap		l 	<C-o>l
 	inoremap		<C-e> <C-o>$
 	inoremap		<C-a> <C-o>^
 
