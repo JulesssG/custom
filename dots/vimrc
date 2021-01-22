@@ -1,6 +1,6 @@
 let mapleader=" "
 
-if isdirectory("~/.vim/bundle/Vundle.vim")
+if filereadable(system('echo -n "$HOME/.vim/bundle/Vundle.vim/autoload/vundle.vim"'))
 	" Initialize Vundle
 	set rtp+=~/.vim/bundle/Vundle.vim
 	call vundle#begin()
@@ -144,7 +144,6 @@ endif
 	nnoremap		<leader><leader>p "+p
 	nnoremap		<leader><leader>P "+P
 	nnoremap		Y y$
-	vnoremap		<C-c> "+y :let @*=@+<CR>
 	vnoremap 		<C-x> "+d :let @*=@+<CR>
 
 
