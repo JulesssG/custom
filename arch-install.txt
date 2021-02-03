@@ -1,0 +1,54 @@
+# Set the keyboard layout
+loadkeys fr_CH
+loadkeys fr_CH-latin1
+
+# Connect to network
+wifi-menu
+
+iwctl device list
+iwctl station $interface scan
+iwctl station $interface get-networks
+iwctl station $interface connect $SSID
+
+# Setup the system clock
+timedatectl set-ntp true
+
+# Make partition
+1. Boot: at least 260MB -> type 1 (UEFI System)
+2. Swap: 150% of RAM -> type 19 (Linux swap)
+3. Other partition
+
+# Format partition
+1. Boot: mkfs.fat -F32
+2. Swap: mkswap
+3. Others: mkfs.ext4
+
+# Mount partitions
+1. Boot: /mnt/boot/efi
+2. Swap: swapon
+3. Others: ...
+
+# Install
+pacstrap /mnt base base-devel vi vim networkmanager iw iwd grub efibootmgr linux man linux-firmware sudo git zsh
+genfstab -U /mnt >> /mnt/etc/fstab
+arch-root /mnt
+
+# Setup grub
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi --removable
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# Environment setup
+vim /etc/pacman.d/mirrorlist -> put one close mirror at the top
+vim /etc/locale.gen -> uncomment en_US
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
+hwclock --systohc
+systemctl enable NetworkManager
+echo jules > /etc/hostname
+vim hosts -> setup as install.txt
+useradd -m jules
+passwd jules
+usermod -aG wheel,audio,video,optical,storage jules
+sed '/%wheel ALL=(ALL) ALL/s/^# //' /etc/sudoers
+run arch-install-helper

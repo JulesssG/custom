@@ -177,6 +177,7 @@ alias pipua="pip3 list --outdated | sed 1,2d | sed 's/\(\S*\).*$/\1/' | xargs -n
 alias ytdla="youtube-dl -x --audio-format mp3 -o '%(title)s.%(ext)s'"
 alias condasource="source /opt/miniconda3/etc/profile.d/conda.sh"
 alias pubip="curl ifconfig.me"
+alias dunsttoggle="notify-send 'DUNST_COMMAND_TOGGLE'"
 
 # Functions
 ## Misc
@@ -188,7 +189,14 @@ function stopwatch(){
    done
 }
 function timer(){
-	date1=$((`date +%s` + $1))
+	if [ $# -gt 1 ];then
+		sec="$(echo $1'*60 +' $2 | bc)"
+	elif [ $# -eq 1 ]; then
+		sec=$1
+	else
+		exit 0
+	fi
+	date1=$((`date +%s` + $sec))
 	while [ "$date1" -ge `date +%s` ]
 	do
 		echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
@@ -238,13 +246,15 @@ function grsa() {
 function gsjoin() {
 	/usr/bin/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dFIXEDMEDIA -dPDFFitPage -sPAPERSIZE=a4 -sOutputFile="$1" "${@:2}"
 }
-function pass() {
-	/usr/bin/pass $@
-	if [[ $?  -eq 0 && "$@" =~ '-c' ]]
-	then
-		clipdel -d "$(clippaste)"
-	fi
-}
+if [ -f /usr/bin/pass ];then
+	function pass() {
+		/usr/bin/pass $@
+		if [[ $?  -eq 0 && "$@" =~ '-c' ]]
+		then
+			clipdel -d "$(clippaste)"
+		fi
+	}
+fi
 # Not working
 function gsopt(){
 	if ! [[ "$1" =~ ".*\.pdf" ]]
