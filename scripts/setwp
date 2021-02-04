@@ -1,4 +1,9 @@
 #!/bin/sh
 
-feh --no-fehbg --bg-center ~/images/wallpapers/fractals/397421.jpg
-
+default="$HOME/custom/misc/default-wallpaper.jpg"
+chosen="$HOME/images/wallpapers/fractals/397421.jpg"
+if [ -f -chosen ]; then
+	feh --no-fehbg --bg-center $chosen
+else
+	feh --no-fehbg --bg-center $default
+fi

@@ -1,6 +1,10 @@
 #!/bin/sh
 # Muc/unmute the sound of the current default sink using pactl
 
+export DISPLAY=:0.0
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+ICON="/usr/share/icons/Adwaita/16x16/status/audio-volume-high-symbolic.symbolic.png"
+
 default_sink_name="alsa_output.pci-0000_00_1f.3.analog-surround-40\|alsa_output.pci-0000_00_1f.3.analog-stereo"
 default_sink="$(pactl list sinks short | grep $default_sink_name | cut -f1)"
 active_sink="$(pactl list sinks short | grep RUNNING | cut -f1)"
@@ -20,4 +24,10 @@ then
 elif [ $1 = 'on' ]
 then
 	pactl set-sink-mute $sink 1
+fi
+
+if [ "$(pacmd list-sinks | grep mute | cut -d' ' -f2)" = 'yes' ];then
+	dunstify -u normal -r 30003 -i $ICON "mute on"
+else
+	dunstify -u normal -r 30003 -i $ICON "mute off"
 fi

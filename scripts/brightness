@@ -5,10 +5,10 @@ ICON="/usr/share/icons/Adwaita/16x16/status/display-brightness-symbolic.symbolic
 
 if [ $1 = '-' ]
 then
-	sudo xbacklight -dec 5
+	sudo /usr/bin/xbacklight -dec 5
 elif [ $1 = '+' ]
 then
-	sudo xbacklight -inc 5
+	sudo /usr/bin/xbacklight -inc 5
 fi
 
 dunstify -u normal -r 30003 -i $ICON "$(xbacklight -get | sed 's/\..*$//')%"

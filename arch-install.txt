@@ -38,6 +38,7 @@ grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi 
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Environment setup
+systemctl enable NetworkManager.service
 vim /etc/pacman.d/mirrorlist -> put one close mirror at the top
 vim /etc/locale.gen -> uncomment en_US
 locale-gen
@@ -51,4 +52,12 @@ useradd -m jules
 passwd jules
 usermod -aG wheel,audio,video,optical,storage jules
 sed '/%wheel ALL=(ALL) ALL/s/^# //' /etc/sudoers
+add 'ALL ALL=(ALL) NOPASSWD: /usr/bin/xbacklight, /usr/bin/systemctl restart NetworkManager, /home/jules/custom/scripts/vpn off' to sudoers file
 run arch-install-helper
+reboot
+
+# Add password store
+ssh-keygen
+Add to github
+pass git clone https://github.com/JulesssG:custom.git
+etc...
