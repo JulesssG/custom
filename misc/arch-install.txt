@@ -35,6 +35,8 @@ arch-root /mnt
 
 # Setup grub
 grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi --removable
+Add 'GRUB_FORCE_HIDDEN_MENU="true"' line to /etc/default/grub
+copy 31_hold_shift to /etc/grub.d (and chmod +x)
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Environment setup
@@ -56,8 +58,8 @@ add 'ALL ALL=(ALL) NOPASSWD: /usr/bin/xbacklight, /usr/bin/systemctl restart Net
 run arch-install-helper
 reboot
 
-# Add password store
+# Add password store and update custom
 ssh-keygen
 Add to github
-pass git clone https://github.com/JulesssG:custom.git
-etc...
+update custom with ssh clone
+follow https://gist.github.com/abtrout/d64fb11ad6f9f49fa325

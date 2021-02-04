@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Only exported variables can be used within the timer's command.
+export PRIMARY_DISPLAY="$(xrandr | awk '/ primary/{print $1}')"
+
+waitbeforedim=180
+waitbeforelock=15
+waitbeforesuspend=10
+
+# Run xidlehook
+xidlehook \
+  `# Don't lock when there's a fullscreen application` \
+  --not-when-fullscreen \
+  `# Don't lock when there's audio playing` \
+  --not-when-audio \
+  `# Dim the screen after first inactivity period, undim if user becomes active` \
+  --timer $waitbeforedim \
+    'xrandr --output "$PRIMARY_DISPLAY" --brightness .1' \
+    'xrandr --output "$PRIMARY_DISPLAY" --brightness 1' \
+  `# Undim & lock after second inactivity period` \
+  --timer $waitbeforelock \
+    'xrandr --output "$PRIMARY_DISPLAY" --brightness 1; "$SCRIPTS_PATH/lockscreen"' \
+    '' \
+  `# Finally, suspend the system` \
+  --timer $waitbeforesuspend \
+    '"$SCRIPTS_PATH"/vpn off; systemctl suspend' \
+    ''

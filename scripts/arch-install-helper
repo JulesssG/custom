@@ -26,8 +26,10 @@ fi
 if [ ! -f /usr/bin/betterlockscreen ];then
 	paru -S betterlockscreen --noconfirm
 fi
+mv /usr/lib/systemd/system/betterlockscreen@.service $TMP
+ln -s $DOTS_PATH/betterlockscreen@.service /usr/lib/systemd/system/betterlockscreen@.service
 systemctl enable betterlockscreen@jules.service
-# TODO: change the command for lockscreen in betterlockscreen service (/usr/lib/systemd/system/betterlockscreen@) and set to lockscreen (modify script), use lockscreen in lockhook, check vpn when suspend
+betterlockscreen -u $HOME/custom/misc/default-lockscreen.jpg
 
 ## Get custom repository
 [ -d $HOME/custom ] || sudo -u jules -g wheel	git clone https://github.com/JulesssG/custom.git $HOME/custom
