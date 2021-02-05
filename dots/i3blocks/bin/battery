@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+[ -z $(ls /sys/class/power_supply 2>1) ] && exit 0
+
 low_threshold=15
 crit_threshold=10
 alert_threshold=3
