@@ -1,14 +1,16 @@
 #!/bin/zsh
-HOME='/home/jules'
-
+trap "exit" INT
 ## Package installation
 pacman -Sy
+pacman -S openssh sshpass pass openconnect mlocate dmenu rxvt-unicode urxvt-perls xorg-xinit xorg-xrandr arandr xorg-xev xorg-xmodmap acpilight xorg-xclipboard xsel i3-gaps i3blocks ttf-font-awesome ctags curl wget imagemagick sxiv zathura zathura-pdf-mupdf pdfgrep pdftk feh pandoc texlive-most scrot pulseaudio pulseaudio-bluetooth alsa-utils pavucontrol bluez bluez-utils blueman blueberry mpv python bpython firefox deluge unclutter unrar zip unzip gzip tar redshift tree ranger fzf dunst dosfstools dmidecode cronie clipmenu sddm qt5-quickcontrols qt5-graphicaleffects --needed --noconfirm
+
 [ $? -eq 0 ] || exit 1
-pacman -S openssh sshpass pass openconnect mlocate dmenu rxvt-unicode urxvt-perls xorg-xinit xorg-xrandr arandr xorg-xev xorg-xmodmap acpilight xorg-xclipboard xsel i3-gaps i3blocks ttf-font-awesome curl wget imagemagick sxiv zathura zathura-pdf-mupdf pdfgrep pdftk feh pandoc texlive-most scrot pulseaudio pulseaudio-bluetooth alsa-utils pavucontrol blueberry mpv python bpython firefox deluge unclutter unrar zip unzip gzip bzip tar redshift tree ranger fzf dunst dosfstools dmidecode cronie clipmenu sddm qt5-quickcontrols qt5-graphicaleffects --needed --noconfirm
+HOME='/home/jules'
+source $HOME/custom/dots/profile
 
 ## Enable systemd services
 systemctl enable sddm.service
-systemctl enable bluebooth.service
+systemctl enable bluetooth.service
 
 [ -d $HOME/.vim/bundle/Vundle.vim ] || sudo -u jules -g wheel git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
 if [ ! -f /usr/bin/paru ];then
@@ -16,20 +18,11 @@ if [ ! -f /usr/bin/paru ];then
 	sudo -u jules -g wheel mkdir -p $HOME/documents/repos
 	cd $HOME/documents/repos
 	sudo -u jules -g wheel git clone https://aur.archlinux.org/paru.git
-	cd yay
-	makepkg -si
+	cd paru
+	sudo -u jules -g wheel makepkg -si
 	echo "Done"
 	paru -Sy
 fi
-
-## Lock screen utility
-if [ ! -f /usr/bin/betterlockscreen ];then
-	paru -S betterlockscreen --noconfirm
-fi
-mv /usr/lib/systemd/system/betterlockscreen@.service $TMP
-ln -s $DOTS_PATH/betterlockscreen@.service /usr/lib/systemd/system/betterlockscreen@.service
-systemctl enable betterlockscreen@jules.service
-betterlockscreen -u $HOME/custom/misc/default-lockscreen.jpg
 
 ## Get custom repository
 [ -d $HOME/custom ] || sudo -u jules -g wheel	git clone https://github.com/JulesssG/custom.git $HOME/custom
@@ -51,6 +44,7 @@ if [ -d $ZSH ]; then
 		chown -R jules:wheel $ZSH
 	fi
 fi
+sudo -u jules -g wheel mkdir $ZSH/custom/themes
 sudo -u jules -g wheel ln -fs $DOTS_PATH/mytheme.zsh-theme $ZSH/custom/themes/mytheme.zsh-theme
 
 ## Get zsh plugins
@@ -62,18 +56,17 @@ dest="$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 echo
 
 ## Touchpad setup
-mv /etc/X11/xorg.conf.d/70-synaptics.conf $TMP > /dev/null
-sudo cat /usr/share/X11/xorg.conf.d/70-synaptics.conf $DOTS_PATH/xorg-70-synaptics.conf | sudo tee /etc/X11/xorg.conf.d/70-synaptics.conf > /dev/null
+ln -s $DOTS_PATH/xorg-70-synaptics.conf /etc/X11/xorg.conf.d/70-synaptics.conf
 
 ## Dmenu
-mv /usr/bin/dmenu $TMP
+mv /usr/bin/dmenu /usr/bin/dmenuexec
 ln -s $SCRIPTS_PATH/dmenu /usr/bin/dmenu
 
 ## Config files in home
 homenames=('.profile' '.zprofile' '.xprofile' '.zshrc' '.xinitrc' '.Xresources' '.vimrc' '.gitconfig')
 dotsnames=('profile' 'zprofile' 'xprofile' 'zshrc' 'xinitrc' 'xresources' 'vimrc' 'gitconfig')
 for i in {1..${#homenames[@]}}; do
-	mv $HOME/$homenames[$i] $TMP > /dev/null
+	mv $HOME/$homenames[$i] $TMP 2> /dev/null
 	sudo -u jules -g wheel ln -s $DOTS_PATH/$dotsnames[$i] $HOME/$homenames[$i]
 	if [ $? -eq 0 ]; then
 		echo "$homenames[$i] -> $dotsnames[$i]: Done"
@@ -88,7 +81,7 @@ dotsnames=('archey3.conf' 'dunstrc' 'i3config' 'i3blocks' 'ranger-rc.conf' 'rang
 for i in {1..${#confignames[@]}}; do
 	c="$HOME/.config/$confignames[$i]"
 	d="$DOTS_PATH/$dotsnames[$i]"
-	mv $c $TMP > /dev/null
+	mv $c $TMP 2> /dev/null
 	sudo -u jules -g wheel mkdir -p ${c%/*}
 	sudo -u jules -g wheel ln -s $d $c
 	if [ $? -eq 0 ]; then
@@ -99,6 +92,6 @@ for i in {1..${#confignames[@]}}; do
 done
 
 ## Sddm login manager
-ln -s $DOTS_PATH/sddm.conf /usr/lib/sddm.conf.d/sddm.conf
+ln -s $DOTS_PATH/sddm.conf /usr/lib/sddm/sddm.conf.d/sddm.conf
 
-sudo tar -xzvf $HOME/custom/sddm-chili.tar.gz -C /usr/share/sddm/themes
+tar -xzvf $HOME/custom/misc/sddm-chili.tar.gz -C /usr/share/sddm/themes > /dev/null

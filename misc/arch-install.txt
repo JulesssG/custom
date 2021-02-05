@@ -55,11 +55,18 @@ passwd jules
 usermod -aG wheel,audio,video,optical,storage jules
 sed '/%wheel ALL=(ALL) ALL/s/^# //' /etc/sudoers
 add 'ALL ALL=(ALL) NOPASSWD: /usr/bin/xbacklight, /usr/bin/systemctl restart NetworkManager, /home/jules/custom/scripts/vpn off' to sudoers file
+chsh jules -> /bin/zsh
 run arch-install-helper
 reboot
 
-# Add password store and update custom
-ssh-keygen
-Add to github
-update custom with ssh clone
-follow https://gist.github.com/abtrout/d64fb11ad6f9f49fa325
+# Lockscreen
+- paru -S betterlockscreen
+- sudo ln -sf $DOTS_PATH/betterlockscreen@.service /usr/lib/systemd/system/betterlockscreen@.service
+- systemctl enable betterlockscreen@jules.service
+- betterlockscreen -u $CUSTOM_PATH/misc/default-lockscreen.jpg
+# Add password store
+- ssh-keygen
+- Add to github
+- update custom with ssh clone
+- follow https://gist.github.com/abtrout/d64fb11ad6f9f49fa325
+# Reclone custom with ssh
