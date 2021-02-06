@@ -3,7 +3,7 @@
 default="$HOME/custom/misc/default-wallpaper.jpg"
 chosen="$HOME/images/wallpapers/fractals/397421.jpg"
 if [ -f -chosen ]; then
-	feh --no-fehbg --bg-center $chosen
+	feh --no-fehbg --bg-scale $chosen
 else
-	feh --no-fehbg --bg-center $default
+	feh --no-fehbg --bg-scale $default
 fi
