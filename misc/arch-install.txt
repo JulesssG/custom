@@ -59,6 +59,7 @@ chsh jules -> /bin/zsh
 run arch-install-helper
 reboot
 
+# Reclone custom with ssh
 # Lockscreen
 - paru -S betterlockscreen
 - sudo ln -sf $DOTS_PATH/betterlockscreen@.service /usr/lib/systemd/system/betterlockscreen@.service
@@ -69,4 +70,4 @@ reboot
 - Add to github
 - update custom with ssh clone
 - follow https://gist.github.com/abtrout/d64fb11ad6f9f49fa325
-# Reclone custom with ssh
+# Install xidle from AUR
