@@ -95,6 +95,10 @@ done
 ln -s $DOTS_PATH/sddm.conf /usr/lib/sddm/sddm.conf.d/sddm.conf
 tar -xzvf $HOME/custom/misc/sddm-chili.tar.gz -C /usr/share/sddm/themes > /dev/null
 
+# Mimes
+app='org.pwmt.zathura.desktop'
+[ -f /usr/share/applications/$app ] && xdg-mime default org.pwmt.zathura.desktop application/pdf
+
 chown jules:wheel -R $HOME/.cache
 echo " File left in home belonging to root:"
-find $HOME -user root
+find $HOME -user root | grep -v '\.custom/'

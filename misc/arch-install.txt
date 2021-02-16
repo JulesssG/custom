@@ -66,8 +66,5 @@ reboot
 - systemctl enable betterlockscreen@jules.service
 - betterlockscreen -u $CUSTOM_PATH/misc/default-lockscreen.jpg
 # Add password store
-- ssh-keygen
-- Add to github
-- update custom with ssh clone
 - follow https://gist.github.com/abtrout/d64fb11ad6f9f49fa325
 # Install xidle from AUR
