@@ -1,20 +1,2 @@
 #!/bin/sh
-# Custom lock screen using i3lock
-
-i3lock --blur=10 -e --indicator -k \
-				--pass-media-keys \
-				--pass-screen-keys \
-        --veriftext="" \
-        --wrongtext="" \
-        --datecolor=ffffffff \
-        --timecolor=ffffffff \
-        --ringcolor=06060acc \
-        --ringvercolor=f26924cc \
-        --ringwrongcolor=d60d0dcc \
-        --insidecolor=06060acc \
-        --insidevercolor=06060acc \
-        --insidewrongcolor=06060acc \
-				--linecolor=06060acc \
-				--datestr="%A, %e %b"
-
-xset dpms force off
+betterlockscreen -l dim
