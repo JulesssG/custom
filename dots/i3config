@@ -88,8 +88,8 @@ bindsym XF86AudioMicMute			exec --no-startup-id "$SCRIPTS_PATH/micmutetoggle"
 
 bindsym XF86MonBrightnessDown	exec --no-startup-id "$SCRIPTS_PATH/brightness -"
 bindsym XF86MonBrightnessUp		exec --no-startup-id "$SCRIPTS_PATH/brightness +"
-bindsym XF86Display						exec --no-startup-id "xrandr --output HDMI2 --auto --same-as eDP1 ; outhdmi"
-bindsym XF86WLAN							exec --no-startup-id "sudo systemctl restart NetworkManager"
+bindsym $mod+XF86Display			exec --no-startup-id "$SCRIPTS_PATH/screenlayout/hdmi-same.sh ; outhdmi"
+bindsym F9										exec --no-startup-id "sudo systemctl restart NetworkManager"
 
 #bindsym XF86Tools
 bindsym XF86Search						exec --no-startup-id "systemctl suspend"
