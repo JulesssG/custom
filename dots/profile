@@ -4,6 +4,7 @@ export ZSH_CUSTOM="$ZSH/custom"
 export ZSH_COMPDUMP="$HOME/.cache/zsh/zcompdump"
 export HISTSIZE=100000
 zshaddhistory() { whence ${${(z)1}[1]} >| /dev/null || return 1 ;} # Avoid putting wrong command on history stack
+export LESSHISTFILE='$HOME/.cache/lesshst'
 export HYPHEN_INSENSITIVE="true"
 export EDITOR="vim"
 export VISUAL="vim"
