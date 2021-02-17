@@ -76,8 +76,8 @@ for i in {1..${#homenames[@]}}; do
 done
 
 ## Config files in .config
-confignames=('archey3/archey3.conf' 'dunst/dunstrc' 'i3/config' 'i3blocks' 'ranger/rc.conf' 'ranger/rifle.conf' 'zathura/zathurarc')
-dotsnames=('archey3.conf' 'dunstrc' 'i3config' 'i3blocks' 'ranger-rc.conf' 'ranger-rifle.conf' 'zathurarc')
+confignames=('archey3/archey3.conf' 'dunst/dunstrc' 'i3/config' 'i3blocks' 'ranger/rc.conf' 'ranger/rifle.conf' 'zathura/zathurarc' 'bpython/config')
+dotsnames=('archey3.conf' 'dunstrc' 'i3config' 'i3blocks' 'ranger-rc.conf' 'ranger-rifle.conf' 'zathurarc' 'bpython-config')
 for i in {1..${#confignames[@]}}; do
 	c="$HOME/.config/$confignames[$i]"
 	d="$DOTS_PATH/$dotsnames[$i]"

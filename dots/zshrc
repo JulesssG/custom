@@ -178,6 +178,7 @@ alias ytdla="youtube-dl -x --audio-format mp3 -o '%(title)s.%(ext)s'"
 alias condasource="source /opt/miniconda3/etc/profile.d/conda.sh"
 alias pubip="curl ifconfig.me"
 alias dunsttoggle="notify-send 'DUNST_COMMAND_TOGGLE'"
+alias wget='wget --hsts-file $HOME/.cache/wget-hsts'
 
 # Functions
 ## Misc
