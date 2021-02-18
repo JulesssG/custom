@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+helpmsg='Need the layouts identifier:
+	d1: Only primary display for desktop
+	d2: Both monitors for desktop
+	l1: Only primary display for laptop
+	l2: Duplicate screen for laptop
+	l3: Side-by-side screens for laptop'
+
+if [ $# -ne 1 ]; then
+	echo $helpmsg
+	exit 1
+fi
+
+if [ $1 = '-h' -o $1 = '--help' ]; then
+	echo $helpmsg
+	exit 0
+elif [ $1 = 'd1' ]; then
+	xrandr --output DP-1 --primary --mode 2560x1440 --pos 0x0 --rotate normal \
+		--output HDMI-1 --off --output HDMI-2 --off --output HDMI-3 --off
+elif [ $1 = 'd2' ]; then
+	xrandr --output DP-1 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output HDMI-1 \
+		--off --output HDMI-2 --mode 1920x1080 --pos 2560x0 --rotate normal --output HDMI-3 --off
+elif [ $1 = 'l1' ]; then
+	temp=0
+elif [ $1 = 'l2' ]; then
+	xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal \
+		--output HDMI-1 --mode 1920x1080 --pos 0x0 --rotate normal \
+		--output DP-1 --off --output HDMI-2 --off
+	outhdmi
+elif [ $1 = 'l3' ]; then
+	temp=0
+	outhdmi
+fi
