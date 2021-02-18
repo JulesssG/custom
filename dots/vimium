@@ -12,7 +12,7 @@ map K previousTab
 unmap f
 unmap F
 map s LinkHints.activateMode
-map S LinkHints.activateModeToOpenInNewTab
+map S LinkHints.activateModeWithQueue
 
 # Custom search engines
 d: https://duckduckgo.com/?q=%s
