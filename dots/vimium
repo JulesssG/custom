@@ -4,6 +4,7 @@ https?://127.0.0.1:8888/*
 https?://www.facebook.com/*	jkl
 https?://www.youtube.com/*	ml123456789
 https?://*/jupyterhub/*
+https?://www.overleaf.com/*
 
 # Custom key mappings
 map J nextTab

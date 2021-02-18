@@ -35,6 +35,8 @@ arch-root /mnt
 
 # Setup grub
 grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi --removable
+Add 'GRUB_FORCE_HIDDEN_MENU="true"' line to /etc/default/grub
+copy 31_hold_shift to /etc/grub.d (and chmod +x)
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Environment setup
@@ -57,13 +59,12 @@ chsh jules -> /bin/zsh
 run arch-install-helper
 reboot
 
+# Reclone custom with ssh
 # Lockscreen
 - paru -S betterlockscreen
 - sudo ln -sf $DOTS_PATH/betterlockscreen@.service /usr/lib/systemd/system/betterlockscreen@.service
 - systemctl enable betterlockscreen@jules.service
 - betterlockscreen -u $CUSTOM_PATH/misc/default-lockscreen.jpg
-# Reclone custom with ssh
 # Add password store
-ssh-keygen
-Add to github
-etc...
+- follow https://gist.github.com/abtrout/d64fb11ad6f9f49fa325
+# Install xidle from AUR

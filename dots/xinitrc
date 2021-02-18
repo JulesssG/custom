@@ -1,20 +1,17 @@
 xrdb -merge $HOME/.Xresources
 
-# Set Keyboard Layout
 $SCRIPTS_PATH/setkb
-
-# Set screen saver
-xset s 300 10
-
-## Set wallpaper and start background programs
 $SCRIPTS_PATH/setwp
 unclutter &
 dunst &
 redshift -l 46.5:6.64 -g 0.8 &
 $SCRIPTS_PATH/mute on
+$SCRIPTS_PATH/lockhook
 
-
-systemctl --user import-environment DISPLAY
+if which dbus-update-activation-environment >/dev/null 2>&1; then
+        dbus-update-activation-environment DISPLAY XAUTHORITY
+fi
+systemctl --user import-environment DISPLAY XAUTHORITY
 systemctl --user start clipmenud.service
 
 exec i3
