@@ -1,20 +1,15 @@
-#!/bin/sh
+#!/bin/zsh
 
-eth_status=$(cat /sys/class/net/e*/operstate)
-wlan_status=$(cat /sys/class/net/w*/operstate)
 icon_e=""
 icon_w=""
-if [ -z $wlan_status  ] && [ $eth_status = 'up' ];then
-	echo $icon_e
-	exit 0
-elif [ -z $wlan_status ]; then
-	exit 0
-fi
-
-[[ $(cat /sys/class/net/w*/operstate) = "up" ]] && status_icon=$icon_w
-[[ $(cat /sys/class/net/e*/operstate) = "up" ]] && status_icon=$icon_e
-if [ -z $status_icon ]
-then
+if [ $(ip route > /dev/null) ]; then
+	if [ "$(ip route list | grep 'default.*dev \<w')" ]; then
+		status_icon=$icon_w
+	elif [ "$(ip route list | grep 'default.*dev \<e')" ]; then
+		echo $icon_e
+		exit 0
+	fi
+else
 	status_icon=""
 	printf "$status_icon\n"
 	exit 0
