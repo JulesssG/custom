@@ -2,7 +2,7 @@
 
 icon_e=""
 icon_w=""
-if [ $(ip route > /dev/null) ]; then
+if [ -n "$(ip route)" ]; then
 	if [ "$(ip route list | grep 'default.*dev \<w')" ]; then
 		status_icon=$icon_w
 	elif [ "$(ip route list | grep 'default.*dev \<e')" ]; then
