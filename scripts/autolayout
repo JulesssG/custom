@@ -9,7 +9,11 @@
 # l3: Side-by-side screens for laptop
 set -e
 
-arg="$(echo -e 'd1\nd2\nl1\nl2\nl3' | dmenu -p 'Select the layout:')"
+if [ $# -eq 1 ]; then
+	arg=$1
+else
+	arg="$(echo -e 'd1\nd2\nl1\nl2\nl3' | dmenu -p 'Select the layout:')"
+fi
 
 if [ $arg = 'd1' ]; then
 	xrandr --output DP-1 --primary --mode 2560x1440 --pos 0x0 --rotate normal \
