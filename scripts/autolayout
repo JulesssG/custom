@@ -1,0 +1,30 @@
+#!/bin/zsh
+# Script for quickly confuring monitor
+# layouts for laptop and desktop computers
+#
+# d1: Only primary display for desktop
+# d2: Both monitors for desktop
+# l1: Only primary display for laptop
+# l2: Duplicate screen for laptop
+# l3: Side-by-side screens for laptop
+set -e
+
+arg="$(echo -e 'd1\nd2\nl1\nl2\nl3' | dmenu -p 'Select the layout:')"
+
+if [ $arg = 'd1' ]; then
+	xrandr --output DP-1 --primary --mode 2560x1440 --pos 0x0 --rotate normal \
+		--output HDMI-1 --off --output HDMI-2 --off --output HDMI-3 --off
+elif [ $arg = 'd2' ]; then
+	xrandr --output DP-1 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output HDMI-1 \
+		--off --output HDMI-2 --mode 1920x1080 --pos 2560x0 --rotate normal --output HDMI-3 --off
+elif [ $arg = 'l1' ]; then
+	xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-1 --off --output HDMI-2 --off
+elif [ $arg = 'l2' ]; then
+	xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal \
+		--output HDMI-1 --mode 1920x1080 --pos 0x0 --rotate normal \
+		--output DP-1 --off --output HDMI-2 --off
+	outhdmi
+elif [ $arg = 'l3' ]; then
+	xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1 --mode 1920x1080 --pos 1920x0 --rotate normal --output DP-1 --off --output HDMI-2 --off
+	outhdmi
+fi
