@@ -132,7 +132,11 @@ alias sdock="sudo docker"
 alias jptn="jupyter notebook >/dev/null"
 alias jptl="jupyter lab >/dev/null"
 alias jptln="jupyter lab --no-browser >/dev/null"
-alias clust="ssh gottraux@iccluster041.iccluster.epfl.ch"
+cix='iccluster041.iccluster.epfl.ch'
+c1='86.119.42.190'
+c2='86.119.39.171'
+c3='86.119.43.181'
+c4='86.119.42.214'
 ## Dots Shortcuts
 alias supdatesl="sudo -E updatesl"
 alias szrc="source ~/.zshrc"
