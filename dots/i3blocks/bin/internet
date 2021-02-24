@@ -2,7 +2,7 @@
 
 icon_e=""
 icon_w=""
-if [ -n "$(ip route)" ]; then
+if [ -n "$(ip route list | grep default)" ]; then
 	if [ "$(ip route list | grep 'default.*dev \<w')" ]; then
 		status_icon=$icon_w
 	elif [ "$(ip route list | grep 'default.*dev \<e')" ]; then
@@ -37,4 +37,5 @@ else
 	color='red'
 fi
 
-printf "<span foreground=\'$color\'>$name</span>$signal$status_icon\n"
+#printf "<span foreground=\'$color\'>$name</span>$signal$status_icon\n"
+printf "<span>$name</span>$signal$status_icon\n"
