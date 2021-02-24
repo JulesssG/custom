@@ -60,8 +60,9 @@ bindkey -M menuselect '^[[A' undefined-key
 alias pm="pacman"
 alias pms="sudo pacman -S $1"
 alias pmr="sudo pacman -Rns $1"
-alias pmy="sudo pacman -Syu"
-alias yayy="yay -Syua"
+alias pmy="sudo pacman -Sy"
+alias pmu="sudo pacman -Syu"
+alias yayu="yay -Syua"
 ## GNU
 ### Dirs and Files
 alias ..='cd ..'
@@ -121,7 +122,7 @@ alias gll="git log --oneline --graph --format=format:'%C(bold blue)%h%C(reset) -
 alias ze="cd $EPFL_DIR"
 alias zep="cd $EPFL_DIR/project"
 alias zei="cd $EPFL_DIR/IX"
-alias zeb="cd $EPFL_DIR/mlbd"
+alias zem="cd $EPFL_DIR/mlbd"
 alias zea="cd $EPFL_DIR/ann"
 alias ze3="cd $EPFL_DIR/../ma3/"
 alias ze2="cd $EPFL_DIR/../ma2/"
@@ -137,6 +138,8 @@ c1='86.119.42.190'
 c2='86.119.39.171'
 c3='86.119.43.181'
 c4='86.119.42.214'
+alias k8='kubectl'
+alias k8c="kubectl --kubeconfig $EPFL_DIR/project/deployment/jules_gottraux.config"
 ## Dots Shortcuts
 alias supdatesl="sudo -E updatesl"
 alias szrc="source ~/.zshrc"
