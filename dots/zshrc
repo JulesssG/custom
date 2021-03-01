@@ -1,4 +1,5 @@
 if [ -d $ZSH ];then
+
   source /home/jules/.profile
   if [ -f $ZSH_CUSTOM/themes/mytheme.zsh-theme ];then
 		ZSH_THEME="mytheme"
@@ -138,8 +139,10 @@ c1='86.119.42.190'
 c2='86.119.39.171'
 c3='86.119.43.181'
 c4='86.119.42.214'
-alias k8='kubectl'
-alias k8c="kubectl --kubeconfig $EPFL_DIR/project/deployment/jules_gottraux.config"
+export KUBECONFIG="$EPFL_DIR/project/deployment/jules_gottraux.config"
+alias renku-deploy='helm upgrade --install renkuhadoop renku/renku --namespace student-project -f renku-values.yaml --timeout 1800s'
+alias helmn="helm -n student-project"
+alias kuben="kubectl -n student-project"
 ## Dots Shortcuts
 alias supdatesl="sudo -E updatesl"
 alias szrc="source ~/.zshrc"
