@@ -122,7 +122,7 @@ alias gll="git log --oneline --graph --format=format:'%C(bold blue)%h%C(reset) -
 ### cds
 alias ze="cd $EPFL_DIR"
 alias zep="cd $EPFL_DIR/project"
-alias zei="cd $EPFL_DIR/IX"
+alias zei="cd $EPFL_DIR/ix"
 alias zem="cd $EPFL_DIR/mlbd"
 alias zea="cd $EPFL_DIR/ann"
 alias zec="cd $EPFL_DIR/acc"
@@ -141,7 +141,6 @@ c2='86.119.39.171'
 c3='86.119.43.181'
 c4='86.119.42.214'
 export KUBECONFIG="$EPFL_DIR/project/deployment/jules_gottraux.config"
-alias renku-deploy='helm upgrade --install renkuhadoop renku/renku --namespace student-project -f renku-values.yaml --timeout 1800s'
 alias helmn="helm -n student-project"
 alias kuben="kubectl -n student-project"
 ## Dots Shortcuts
