@@ -12,7 +12,7 @@ set -e
 if [ $# -eq 1 ]; then
 	arg=$1
 else
-	if [ "$(sudo dmidecode -t baseboard | grep -i manufacturer | awk '{print tolower($2)}')" = asus ]; then
+	if [ "$(sudo dmidecode -t baseboard | grep -i manufacturer | awk '{print tolower($2)}')" = 'asustek' ]; then
 		avlayouts='d1\nd2'
 	else
 		avlayouts='l1\nl2\nl3'
