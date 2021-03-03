@@ -12,7 +12,12 @@ set -e
 if [ $# -eq 1 ]; then
 	arg=$1
 else
-	arg="$(echo -e 'd1\nd2\nl1\nl2\nl3' | dmenu -p 'Select the layout:')"
+	if [ "$(sudo dmidecode -t baseboard | grep -i manufacturer | awk '{print tolower($2)}')" = asus ]; then
+		avlayouts='d1\nd2'
+	else
+		avlayouts='l1\nl2\nl3'
+	fi
+	arg="$(echo -e $avlayouts | dmenu -p 'Select the layout:')"
 fi
 
 if [ $arg = 'd1' ]; then
@@ -24,11 +29,13 @@ elif [ $arg = 'd2' ]; then
 elif [ $arg = 'l1' ]; then
 	xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-1 --off --output HDMI-2 --off
 elif [ $arg = 'l2' ]; then
+xmodmap -e 'keycode 9 = Escape'
 	xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal \
 		--output HDMI-1 --mode 1920x1080 --pos 0x0 --rotate normal \
 		--output DP-1 --off --output HDMI-2 --off
 	outhdmi
 elif [ $arg = 'l3' ]; then
+	xmodmap -e 'keycode 9 = Escape'
 	xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1 --mode 1920x1080 --pos 1920x0 --rotate normal --output DP-1 --off --output HDMI-2 --off
 	outhdmi
 fi

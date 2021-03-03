@@ -54,7 +54,7 @@ useradd -m jules
 passwd jules
 usermod -aG wheel,audio,video,optical,storage jules
 sed '/%wheel ALL=(ALL) ALL/s/^# //' /etc/sudoers
-add 'ALL ALL=(ALL) NOPASSWD: /usr/bin/xbacklight, /usr/bin/systemctl restart NetworkManager, /home/jules/custom/scripts/vpn off' to sudoers file
+add 'ALL ALL=(ALL) NOPASSWD: /usr/bin/xbacklight, /usr/bin/systemctl restart NetworkManager, /home/jules/custom/scripts/vpn off, /usr/bin/dmidecode' to sudoers file
 chsh jules -> /bin/zsh
 run arch-install-helper
 reboot
