@@ -2,8 +2,8 @@
 
 icon_e=""
 icon_w=""
-if [ -n "$(ip route list | grep default)" ]; then
-	if [ "$(ip route list | grep 'default.*dev \<w')" ]; then
+if [ -n "$(ip route list | grep 'default.*via')" ]; then
+	if [ "$(ip route list | grep 'default via.*dev \<w')" ]; then
 		status_icon=$icon_w
 	elif [ "$(ip route list | grep 'default.*dev \<e')" ]; then
 		echo $icon_e
