@@ -27,9 +27,10 @@ elif [ $arg = 'd2' ]; then
 	xrandr --output DP-1 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output HDMI-1 \
 		--off --output HDMI-2 --mode 1920x1080 --pos 2560x0 --rotate normal --output HDMI-3 --off
 elif [ $arg = 'l1' ]; then
+	xmodmap -e 'keycode 9 = Caps_Lock'
 	xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-1 --off --output HDMI-2 --off
 elif [ $arg = 'l2' ]; then
-xmodmap -e 'keycode 9 = Escape'
+	xmodmap -e 'keycode 9 = Escape'
 	xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal \
 		--output HDMI-1 --mode 1920x1080 --pos 0x0 --rotate normal \
 		--output DP-1 --off --output HDMI-2 --off
