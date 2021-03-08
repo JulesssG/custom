@@ -271,6 +271,9 @@ if [ -f /usr/bin/pass ];then
 	}
 fi
 # Temp for epfl
+function all-nodes() {
+	(echo '############### hadoop-1 ###############' && ssh ubuntu@$c1 $*; echo '############### hadoop-2 ###############' && ssh ubuntu@$c2 $*; echo '############### hadoop-3 ###############' && ssh ubuntu@$c3 $*;echo '############### hadoop-4 ###############' && ssh ubuntu@$c4 $*)
+}
 function clustres() {
 	ldapsearch -h ldap.epfl.ch -b 'c=ch' -LLL -x uid=$1
 }
