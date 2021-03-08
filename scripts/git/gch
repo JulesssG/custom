@@ -10,6 +10,7 @@ do
 	if [[ -f "${line}/FETCH_HEAD" && -n "$(grep -or 'github.com:JulesssG' "${line}/FETCH_HEAD")" ]]
 	then
 		cd $line && cd ..
+		git fetch &>/dev/null
 		gs="$(git status -sb)"
 		if [[ -n "$(echo "$gs" | grep -o 'ahead')" || $(echo "$gs" | wc -l) > 1 ]]
 		then
