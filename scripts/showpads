@@ -1,0 +1,15 @@
+#!/usr/bin/python
+# Scripts that shows all i3 scratchpads except
+# permanent ones (starting with dropdown)
+#
+# Source: https://github.com/Gorzen/.files/blob/master/.local/bin/show-scratchpad-windows
+
+import i3ipc
+import re
+
+i3 = i3ipc.Connection()
+dropdown_windows = re.compile("^dropdown_*")
+
+for leaf in i3.get_tree().scratchpad().leaves():
+    if not dropdown_windows.match(leaf.window_instance):
+        i3.command(f"[con_id={leaf.id}] scratchpad show")
