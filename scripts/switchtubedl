@@ -1,5 +1,7 @@
 #!/bin/python
-# Cloux' script to download video from switch-tube drive
+# Script to download video from switch-tube drive
+# Slightly improved, based on Olivier Cloux's script
+#
 # Must be logged to tequila on firefox
 # Usage: switchtubedl url outputname.mp4
 
@@ -24,7 +26,10 @@ session.headers.update({
                    "Safari/537.36")  # somehow standard User-Agent
 })
 page = session.get(page_url).text
-vid_url = re.search(r"<source [^>]* src=\"([^\"]*1080[^\"]*)\"", page).group(1)
+vid_search = re.search(r"<source [^>]* src=\"([^\"]*1080[^\"]*)\"", page)
+if vid_search is None:
+    vid_search = re.search(r"src=\"([^\"]*)\" property=\"media:video\"", page)
+vid_url = vid_search.group(1)
 vid_url = vid_url.replace("&amp;", "&")
 vid = session.get(vid_url, stream=True)
 if vid.status_code == 200:
