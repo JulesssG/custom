@@ -117,6 +117,7 @@ alias gb="git branch"
 alias gco='git checkout'
 alias gpl="git pull"
 alias gp="git push"
+alias gcno="git commit --amend --no-edit"
 alias gl="git --no-pager log -10 --oneline --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) -%C(red) %an%C(reset)%C(bold yellow)%+d%C(reset)'"
 alias gll="git log --oneline --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) -%C(red) %an%C(reset)%C(bold yellow)%+d%C(reset)'"
 ## EPFL
@@ -245,10 +246,6 @@ function gr() {
 function gac() {
 	git add $(git rev-parse --show-toplevel)
 	git commit
-}
-function gamno() {
-	git add $(git rev-parse --show-toplevel)
-	git commit --amend --no-edit
 }
 function grsa() {
 	git restore --staged $(git rev-parse --show-toplevel)
