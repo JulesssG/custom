@@ -6,6 +6,7 @@ if filereadable(system('echo -n "$HOME/.vim/bundle/Vundle.vim/autoload/vundle.vi
 	call vundle#begin()
 		Plugin 'VundleVim/Vundle.vim'
 		Plugin 'ycm-core/YouCompleteMe'
+		Plugin 'junegunn/fzf.vim'
 		Plugin 'djoshea/vim-autoread'
 		Plugin 'tpope/vim-commentary'
 		Plugin 'christoomey/vim-system-copy'
