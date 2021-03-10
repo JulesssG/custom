@@ -26,6 +26,11 @@ if filereadable(system('echo -n "$HOME/.vim/bundle/Vundle.vim/autoload/vundle.vi
 		" Plugin 'rhysd/git-messenger.vim'
 	call vundle#end()
 	" Plugin mappings and options
+		"" Fzf
+		nnoremap <leader>zf :Files<CR>
+		nnoremap <leader>zh :History<CR>
+		nnoremap <leader>zhc :History/<CR>
+
 		"" Commentary
 		nmap cm gc
 
