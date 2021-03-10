@@ -127,6 +127,7 @@ alias zei="cd $EPFL_DIR/ix"
 alias zem="cd $EPFL_DIR/mlbd"
 alias zea="cd $EPFL_DIR/ann"
 alias zec="cd $EPFL_DIR/acc"
+alias zet="cd $EPFL_DIR/tic-detection"
 alias ze3="cd $EPFL_DIR/../ma3/"
 alias ze2="cd $EPFL_DIR/../ma2/"
 ### Misc
