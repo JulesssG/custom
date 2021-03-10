@@ -77,14 +77,14 @@ for i in {1..${#homenames[@]}}; do
 done
 
 ## Config files in .config
-confignames=('archey3/archey3.conf' 'dunst/dunstrc' 'i3/config' 'i3blocks' 'ranger/rc.conf' 'ranger/rifle.conf' 'ranger/scope.sh' 'zathura/zathurarc' 'bpython/config')
-dotsnames=('archey3.conf' 'dunstrc' 'i3config' 'i3blocks' 'ranger-rc.conf' 'ranger-rifle.conf' 'ranger-scope.sh' 'zathurarc' 'bpython-config')
+confignames=('archey3/archey3.conf' 'dunst/dunstrc' 'i3/config' 'i3blocks' 'ranger/rc.conf' 'ranger/rifle.conf' 'ranger/scope.sh' 'zathura/zathurarc' 'bpython/config' 'mpv/mpv.conf' 'mpv/input.conf')
+dotsnames=('archey3.conf' 'dunstrc' 'i3config' 'i3blocks' 'ranger-rc.conf' 'ranger-rifle.conf' 'ranger-scope.sh' 'zathurarc' 'bpython-config' 'mpv.conf' 'mpv-input.conf')
 for i in {1..${#confignames[@]}}; do
 	c="$HOME/.config/$confignames[$i]"
 	d="$DOTS_PATH/$dotsnames[$i]"
 	mv $c $TMP 2> /dev/null
 	sudo -u jules -g wheel mkdir -p ${c%/*}
-	sudo -u jules -g wheel ln -s $d $c
+	sudo -u jules -g wheel ln -s $d $cm
 	if [ $? -eq 0 ]; then
 		echo "$confignames[$i] -> $dotsnames[$i]: Done"
 	else
