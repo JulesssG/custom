@@ -1,28 +1,49 @@
 #!/bin/sh
 # Toggle the wifi as default. Otherwise act as the argument passed.
-# Arguments: on, off
+# Arguments:
+# 	on, off: activate or deactivate the wifi
+# 	-r, --restart: restart the network manager and
+#									 tries to connect to known wifis
 
 export DISPLAY=:0.0
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
-echo "Previous state: $(nmcli radio wifi)"
 state="$1"
+notify=0
 if [ $# -eq 0 ]
 then
+	echo "Previous state: $(nmcli radio wifi)"
 	if [ "$(nmcli radio wifi)" = "enabled" ]
 	then
 		state="off"
-		nmcli radio wifi off
+		nmcli radio wifi off && notify=1
 	else
 		state="on"
-		nmcli radio wifi on
+		nmcli radio wifi on && notify=1
 	fi
+elif [ $1 = '-r' -o $1 = '--restart' ]; then
+	sudo systemctl restart NetworkManager
+	sleep 1
+
+	max_tries=100
+	i=0
+	while [ $i -lt $max_tries ]; do
+		if nmcli dev wifi list | grep xiaojules >/dev/null; then
+			echo 'Connection to xiaojules'
+			nmcli -p con up xiaojules && exit 0
+		elif nmcli dev wifi list | grep 'iPhone de Chloé' >/dev/null; then
+			nmcli -p con up 'iPhone de Chloé' && exit 0
+		fi
+		let "i++"
+		sleep 0.05
+	done
+	exit 0
 elif [ $1 = 'off' ]
 then
-	nmcli radio wifi off
+	nmcli radio wifi off && notify=1
 elif [ $1 = 'on' ]
 then
-	nmcli radio wifi on
+	nmcli radio wifi on && notify=1
 fi
 
-dunstify -u normal -r 30010 "Wifi $state"
+[ $notify -eq 1 ] && dunstify -u normal -r 30010 "Wifi $state"

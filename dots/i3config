@@ -90,7 +90,7 @@ bindsym XF86AudioMicMute			exec --no-startup-id "$SCRIPTS_PATH/micmutetoggle"
 bindsym XF86MonBrightnessDown	exec --no-startup-id "$SCRIPTS_PATH/brightness -"
 bindsym XF86MonBrightnessUp		exec --no-startup-id "$SCRIPTS_PATH/brightness +"
 bindsym $mod+XF86Display			exec --no-startup-id "$SCRIPTS_PATH/screenlayout/hdmi-same.sh ; outhdmi"
-bindsym F9										exec --no-startup-id "sudo systemctl restart NetworkManager"
+bindsym F9										exec --no-startup-id "$SCRIPTS_PATH/wifi --restart"
 
 #bindsym XF86Tools
 bindsym XF86Search						exec --no-startup-id "systemctl suspend"
