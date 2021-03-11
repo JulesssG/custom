@@ -33,7 +33,7 @@ def get_repos():
     repos = [repo[:-4] for repo in repos]
     # Add repos outside EPFL
     home = os.environ["HOME"]
-    repos = repos + [home+'/custom']
+    repos = repos + [home+'/custom', home+'/.password-store']
     # Filter not-directory repos, for example empty string, and unwanted repos
     return filter_repos(repos)
 
