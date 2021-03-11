@@ -5,27 +5,35 @@
 # Source: https://github.com/Gorzen/.files/blob/master/.local/bin/dirty-git-epfl
 
 import os
-import subprocess
 import multiprocessing
-from colors import color as c
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 def run_command(cmd, cwd="."):
-    stdout, _ = subprocess.Popen(
-        cmd.split(" "), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=cwd
-    ).communicate()
+    stream = os.popen(cmd)
+    output = stream.read().split('\n')
 
-    return stdout.decode("utf-8")
+    return list(filter(None, output))
 
 
 def get_repos():
     epfl_dir = os.environ["EPFL_DIR"]
     # Find repos
-    repos = run_command(f"find {epfl_dir} -name .git -type d")
-    # Get list of repos
-    repos = repos.split("\n")
+    repos = run_command(f"find {epfl_dir} -name '.git' -type d")
     # Remove "/.git" from repo path
-    repos = ["/".join(repo.split("/")[:-1]) for repo in repos]
+    repos = [repo[:-4] for repo in repos]
+    # Add repos outside EPFL
+    home = os.environ["HOME"]
+    repos = repos + [home+'/custom']
     # Filter not-directory repos, for example empty string, and unwanted repos
     return filter_repos(repos)
 
@@ -93,7 +101,7 @@ def print_dirty_repos(repos):
 
         if dirty_repo:
             repo_short_name = "/".join(repo.split("/")[4:])
-            print(f"{c.PURPLE}{c.BOLD}{c.UNDERLINE}{repo_short_name}:{c.END}")
+            print(f"{bcolors.PURPLE}{bcolors.BOLD}{bcolors.UNDERLINE}{repo_short_name}:{bcolors.ENDC}")
 
         if dirty_branch:
             print(git_branch)
