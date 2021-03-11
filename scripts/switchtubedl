@@ -13,7 +13,6 @@ from clint.textui import progress
 
 
 page_url = sys.argv[1]
-fname = sys.argv[2]
 
 session = requests.session()
 cookies = browser_cookie3.firefox(domain_name=".switch.ch")
@@ -28,11 +27,10 @@ session.headers.update({
 page = session.get(page_url).text
 
 # Get name of video if needed
-full_block_name_pattern = re.compile(r"hgroup.*title.*<h2>(.*)</h2>.*</hgroup>", re.DOTALL)
-block = full_block_name_pattern.findall(page)[0]
-name = re.sub(r'<a href.*</a>', '', block).strip(' \r\n,')
-print(name)
-exit()
+if len(sys.argv) == 2 or (len(sys.argv) == 3 and sys.argv[2] == ''):
+    full_block_name_pattern = re.compile(r"hgroup.*title.*<h2>(.*)</h2>.*</hgroup>", re.DOTALL)
+    block = full_block_name_pattern.findall(page)[0]
+    fname = re.sub(r'<a href.*</a>', '', block).strip(' \r\n,')
 vid_search = re.search(r"<source [^>]* src=\"([^\"]*1080[^\"]*)\"", page)
 if vid_search is None:
     vid_search = re.search(r"src=\"([^\"]*)\" property=\"media:video\"", page)
