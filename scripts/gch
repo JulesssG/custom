@@ -2,9 +2,10 @@
 # Script fetching and checking all EPFL
 # repos as well as permanent ones
 #
-# Source: https://github.com/Gorzen/.files/blob/master/.local/bin/dirty-git-epfl
+# Inspired from https://github.com/Gorzen/.files/blob/master/.local/bin/dirty-git-epfl
 
 import os
+import subprocess
 import multiprocessing
 
 class bcolors:
@@ -19,21 +20,25 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def run_command(cmd, cwd="."):
-    stream = os.popen(cmd)
-    output = stream.read().split('\n')
+    stdout, _ = subprocess.Popen(
+        cmd.split(" "), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=cwd
+    ).communicate()
 
-    return list(filter(None, output))
+    return stdout.decode("utf-8")
 
 
 def get_repos():
     epfl_dir = os.environ["EPFL_DIR"]
     # Find repos
-    repos = run_command(f"find {epfl_dir} -name '.git' -type d")
+    stream = os.popen(f"find {epfl_dir} -name '.git' -type d")
+    output = stream.read().split('\n')
+    repos = list(filter(None, output))
     # Remove "/.git" from repo path
     repos = [repo[:-4] for repo in repos]
-    # Add repos outside EPFL
+    # Add permanent repos outside EPFL
     home = os.environ["HOME"]
-    repos = repos + [home+'/custom', home+'/.password-store']
+    paths = ['/custom', '/.password-store']
+    repos = repos + [home+path for path in paths]
     # Filter not-directory repos, for example empty string, and unwanted repos
     return filter_repos(repos)
 
@@ -67,7 +72,7 @@ def fetch_repos(repos):
 
 
 # Print iterations progress
-def printProgressBar(iteration, total, length=100, fill="█"):
+def printProgressBar(iteration, total, length=70, fill="█"):
     """
     Call in a loop to create terminal progress bar
     @params:
@@ -100,8 +105,8 @@ def print_dirty_repos(repos):
         dirty = dirty or dirty_repo
 
         if dirty_repo:
-            repo_short_name = "/".join(repo.split("/")[4:])
-            print(f"{bcolors.PURPLE}{bcolors.BOLD}{bcolors.UNDERLINE}{repo_short_name}:{bcolors.ENDC}")
+            repo_short_name = repo.split('/')[-1]
+            print(f"{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}{repo_short_name}:{bcolors.ENDC}")
 
         if dirty_branch:
             print(git_branch)
