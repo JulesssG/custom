@@ -3,6 +3,9 @@
 # at runtime and screenshot will be stored
 # in $DEST
 DEST=$HOME/images/screenshots
+if ! [ -d $DEST ]; then
+	mkdir -p $DEST
+fi
 
 if ! [ -d /tmp/screenshots ]
 then
