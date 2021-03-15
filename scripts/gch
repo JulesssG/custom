@@ -7,6 +7,7 @@
 import os
 import subprocess
 import multiprocessing
+import re
 
 class bcolors:
     HEADER = '\033[95m'
@@ -72,7 +73,7 @@ def fetch_repos(repos):
 
 
 # Print iterations progress
-def printProgressBar(iteration, total, length=70, fill="█"):
+def printProgressBar(iteration, total, length=60, fill="█"):
     """
     Call in a loop to create terminal progress bar
     @params:
@@ -105,7 +106,9 @@ def print_dirty_repos(repos):
         dirty = dirty or dirty_repo
 
         if dirty_repo:
-            repo_short_name = repo.strip('/').split('/')[-1]
+            base_epfl = os.environ['EPFL_DIR'].split('/')[-1]
+            repo_short_name = re.sub(os.environ['HOME']+'/', '', repo)
+            repo_short_name = base_epfl if repo_short_name.endswith(base_epfl+'/') else re.sub('^.*'+base_epfl+'/', '', repo_short_name)
             print(f"{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}{repo_short_name}:{bcolors.ENDC}")
 
         if dirty_branch:
