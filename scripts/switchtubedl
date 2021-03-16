@@ -32,6 +32,8 @@ if len(sys.argv) == 2 or (len(sys.argv) == 3 and sys.argv[2] == ''):
     block = full_block_name_pattern.findall(page)[0]
     fname = re.sub(r'<a href.*</a>', '', block).strip(' \r\n,')
     print('Name:', fname)
+else:
+    fname = sys.argv[2]
 vid_search = re.search(r"<source [^>]* src=\"([^\"]*1080[^\"]*)\"", page)
 if vid_search is None:
     vid_search = re.search(r"src=\"([^\"]*)\" property=\"media:video\"", page)
