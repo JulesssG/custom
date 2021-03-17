@@ -174,7 +174,7 @@ bindsym $mod+b 						exec --no-startup-id firefox
 bindsym $mod+Shift+b			exec --no-startup-id blueberry
 
 bindsym $mod+n						exec --no-startup-id mailspring
-#bindsym $mod+Shift+n
+bindsym $mod+Shift+n			exec --no-startup-id "killall mailspring && mailspring"
 
 bindsym $mod+m						exec --no-startup-id "$SCRIPTS_PATH/mwep -r; i3-msg 'workspace back_and_forth' ; i3-msg 'workspace back_and_forth'"
 bindsym $mod+Shift+m			exec --no-startup-id "$SCRIPTS_PATH/mwep ; i3-msg 'workspace back_and_forth' ; i3-msg 'workspace back_and_forth'"
