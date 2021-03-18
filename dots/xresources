@@ -69,8 +69,8 @@ URxvt.keysym.M-k: 							perl:keyboard-select:activate
 URxvt.keysym.M-s:								perl:keyboard-select:search
 URxvt.keyboard-select.clipboard: true
 !! resize-font
-URxvt.resize-font.bigger:  			M-1
-URxvt.resize-font.smaller: 			M-2
+URxvt.resize-font.bigger:  			M-o
+URxvt.resize-font.smaller: 			M-i
 !! matcher
 URxvt.urlLauncher:							/usr/bin/xdg-open
 URxvt.underlineURLs: 						true
