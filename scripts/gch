@@ -1,6 +1,7 @@
 #!/usr/bin/python
-# Script fetching and checking all EPFL
-# repos as well as permanent ones
+# Script that automatically checks (and pull if possible) all git repos. The script
+# search recursively in epfl_dir and add all other_repos to the list of repos to check.
+# Add pattern (substring) in exclude_pattern to exclude repos.
 #
 # Inspired from https://github.com/Gorzen/.files/blob/master/.local/bin/dirty-git-epfl
 
@@ -10,16 +11,22 @@ import multiprocessing
 import readchar
 import re
 
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+# Repo variables
+epfl_dir = os.environ["EPFL_DIR"]
+home = os.environ["HOME"]
+other_repos = ['/custom', '/.password-store']
+exclude_patterns = ['project/renku-repos']
+
+# Colors
+HEADER = '\033[95m'
+OKBLUE = '\033[94m'
+OKCYAN = '\033[96m'
+OKGREEN = '\033[92m'
+WARNING = '\033[93m'
+FAIL = '\033[91m'
+ENDC = '\033[0m'
+BOLD = '\033[1m'
+UNDERLINE = '\033[4m'
 
 def run_command(cmd, cwd="."):
     stdout, _ = sp.Popen(
@@ -30,30 +37,31 @@ def run_command(cmd, cwd="."):
 
 
 def get_repos():
-    epfl_dir = os.environ["EPFL_DIR"]
     # Find repos
     stream = os.popen(f"find {epfl_dir} -name '.git' -type d")
     output = stream.read().split('\n')
     repos = list(filter(None, output))
+
     # Remove "/.git" from repo path
     repos = [repo[:-4] for repo in repos]
+
     # Add permanent repos outside EPFL
-    home = os.environ["HOME"]
-    paths = ['/custom', '/.password-store']
-    repos = repos + [home+path for path in paths]
-    # Filter not-directory repos, for example empty string, and unwanted repos
+    repos = repos + [home+path for path in other_repos]
+
     return filter_repos(repos)
 
 
-def filter_repos(repos, filter_list=[]):
-    repos = list(filter(None, repos))
+def filter_repos(repos):
+    repos = list(filter(os.path.isdir, repos))
 
+    # Filter patterns to exclude
     for repo in repos:
-        if not os.path.isdir(repo):
-            print(f"Warning: '{repo}' is not a directory, discarding")
-            repos.remove(repo)
+        for path in exclude_patterns:
+            if path in repo:
+                repos.remove(repo)
+                break
 
-    return [repo for repo in repos if repo not in filter_list]
+    return repos
 
 
 def fetch_repos(repos):
@@ -108,26 +116,30 @@ def print_dirty_repos(repos):
         git_branch = run_command("git branch -vv --color=always", cwd=repo)
         git_status = run_command("git -c color.status=always status -sb", repo)
 
+        # Check status
         dirty_status = git_status.count("\n") > 1
         dirty_ahead = "ahead" in git_branch
         dirty_behind = "behind" in git_branch
         dirty_branch = dirty_behind or dirty_ahead
         dirty_repo = dirty_status or dirty_branch
-        # If clean except for behind remote, pull
+
+        # Pull if just behind remote
         pulled = False
         if dirty_behind and not dirty_ahead and not dirty_status:
-            print(f"Pull {bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}{repo_short_name}:{bcolors.ENDC}? [y/n]:", end=' ', flush=True)
+            print(f"Pull {FAIL}{BOLD}{UNDERLINE}{repo_short_name}:{ENDC}? [y/n]:", end=' ', flush=True)
             key_read = readchar.readkey()
             print(key_read)
             if key_read == 'y' or key_read == 'Y':
                 print('Pulling ...')
                 stream = sp.Popen(f"cd {repo} && git pull", shell=True)
                 pulled = stream.wait() == 0
+                pulled and print()
         dirty_repo = dirty_repo and not pulled
         dirty = dirty or dirty_repo
 
+        # Update dirty report
         if dirty_repo:
-            dirty_report.append(f"{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}{repo_short_name}:{bcolors.ENDC}")
+            dirty_report.append(f"{FAIL}{BOLD}{UNDERLINE}{repo_short_name}:{ENDC}")
 
         if dirty_branch:
             dirty_report.append(git_branch)
@@ -142,7 +154,6 @@ def print_dirty_repos(repos):
         print('\n'.join(dirty_report))
 
 
-import sys
 if __name__ == "__main__":
     repos = get_repos()
     fetch_repos(repos)
