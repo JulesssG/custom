@@ -5,8 +5,9 @@
 # Inspired from https://github.com/Gorzen/.files/blob/master/.local/bin/dirty-git-epfl
 
 import os
-import subprocess
+import subprocess as sp
 import multiprocessing
+import readchar
 import re
 
 class bcolors:
@@ -21,8 +22,8 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def run_command(cmd, cwd="."):
-    stdout, _ = subprocess.Popen(
-        cmd.split(" "), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=cwd
+    stdout, _ = sp.Popen(
+        cmd.split(" "), stdout=sp.PIPE, stderr=sp.STDOUT, cwd=cwd
     ).communicate()
 
     return stdout.decode("utf-8")
@@ -92,33 +93,53 @@ def printProgressBar(iteration, total, length=60, fill="█"):
 
 
 def print_dirty_repos(repos):
+    dirty_report = []
     # Longest repo string length
     max_length = len(max(repos, key=len))
     dirty = False
 
     for repo in repos:
+        base_epfl = os.environ['EPFL_DIR'].split('/')[-1]
+        repo_short_name = re.sub(os.environ['HOME']+'/', '', repo)
+        repo_short_name = (base_epfl if repo_short_name.endswith(base_epfl+'/')
+                            else re.sub('^.*'+base_epfl+'/', '',
+                            repo_short_name))
+
         git_branch = run_command("git branch -vv --color=always", cwd=repo)
         git_status = run_command("git -c color.status=always status -sb", repo)
 
         dirty_status = git_status.count("\n") > 1
-        dirty_branch = "behind" in git_branch or "ahead" in git_branch
+        dirty_ahead = "ahead" in git_branch
+        dirty_behind = "behind" in git_branch
+        dirty_branch = dirty_behind or dirty_ahead
         dirty_repo = dirty_status or dirty_branch
+        # If clean except for behind remote, pull
+        pulled = False
+        if dirty_behind and not dirty_ahead and not dirty_status:
+            print(f"Pull {bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}{repo_short_name}:{bcolors.ENDC}? [y/n]:", end=' ', flush=True)
+            key_read = readchar.readkey()
+            print(key_read)
+            if key_read == 'y' or key_read == 'Y':
+                print('Pulling ...')
+                stream = sp.Popen(f"cd {repo} && git pull", shell=True)
+                pulled = stream.wait() == 0
+        dirty_repo = dirty_repo and not pulled
         dirty = dirty or dirty_repo
 
         if dirty_repo:
-            base_epfl = os.environ['EPFL_DIR'].split('/')[-1]
-            repo_short_name = re.sub(os.environ['HOME']+'/', '', repo)
-            repo_short_name = base_epfl if repo_short_name.endswith(base_epfl+'/') else re.sub('^.*'+base_epfl+'/', '', repo_short_name)
-            print(f"{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}{repo_short_name}:{bcolors.ENDC}")
+            dirty_report.append(f"{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}{repo_short_name}:{bcolors.ENDC}")
 
         if dirty_branch:
-            print(git_branch)
+            dirty_report.append(git_branch)
 
         if dirty_status:
-            print(git_status)
+            dirty_report.append(git_status)
 
     if not dirty:
         print("All clean!")
+    else:
+        print("Dirty report")
+        print('\n'.join(dirty_report))
 
 
 import sys
