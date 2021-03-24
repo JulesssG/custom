@@ -121,6 +121,7 @@ def print_dirty_repos(repos):
         print("All clean!")
 
 
+import sys
 if __name__ == "__main__":
     repos = get_repos()
     fetch_repos(repos)
