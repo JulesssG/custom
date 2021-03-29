@@ -10,12 +10,13 @@ import subprocess as sp
 import multiprocessing
 import readchar
 import re
+import numpy as np
 
 # Repo variables
 epfl_dir = os.environ["EPFL_DIR"]
 home = os.environ["HOME"]
 other_repos = ['/custom', '/.password-store']
-exclude_patterns = ['project/renku-repos']
+exclude_patterns = ['project/renku-repos', 'mlbd']
 
 # Colors
 HEADER = '\033[95m'
@@ -52,14 +53,11 @@ def get_repos():
 
 
 def filter_repos(repos):
+    # Filter non-directory repos
     repos = list(filter(os.path.isdir, repos))
 
-    # Filter patterns to exclude
-    for repo in repos:
-        for path in exclude_patterns:
-            if path in repo:
-                repos.remove(repo)
-                break
+    # Remove repo with matching pattern in exclude_patterns
+    repos = list(filter(lambda repo: np.all([pat not in repo for pat in exclude_patterns]), repos))
 
     return repos
 
