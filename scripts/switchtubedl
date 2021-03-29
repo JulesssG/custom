@@ -4,6 +4,9 @@
 #
 # Must be logged to tequila on firefox
 # Usage: switchtubedl url outputname.mp4
+#        switchtubedl url
+# in the second case the name is scrapped from the page
+# automatically (always put mp4 extension regardless)
 
 import requests
 import browser_cookie3
@@ -31,6 +34,7 @@ if len(sys.argv) == 2 or (len(sys.argv) == 3 and sys.argv[2] == ''):
     full_block_name_pattern = re.compile(r"hgroup.*title.*<h2>(.*)</h2>.*</hgroup>", re.DOTALL)
     block = full_block_name_pattern.findall(page)[0]
     fname = re.sub(r'<a href.*</a>', '', block).strip(' \r\n,')
+    fname += '.mp4' # Assuming all video on switch are mp4
     print('Name:', fname)
 else:
     fname = sys.argv[2]
