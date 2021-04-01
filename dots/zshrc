@@ -181,7 +181,6 @@ alias cal="cal -m"
 alias ghs="\gs"
 alias ccp='fc -ln -1 | awk '\''{$1=$1}1'\'' ORS='\'''\'' | xsel -ib'
 alias ocp='fc -e - | head -n1 | awk '\''{$1=$1}1'\'' ORS='\'''\'' | xsel -ib'
-alias nt="urxvt -cd $(pwd) & disown &>/dev/null"
 alias untar="tar -zxvf"
 alias ffmpeg="ffmpeg -hide_banner"
 alias ffplay="ffplay -hide_banner"
@@ -197,6 +196,9 @@ alias wget='wget --hsts-file $HOME/.cache/wget-hsts'
 
 # Functions
 ## Misc
+function nt() {
+	urxvt -cd $(pwd) & disown &>/dev/null
+}
 function stopwatch(){
   date1=`date +%s`;
    while true; do
