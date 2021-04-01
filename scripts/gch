@@ -16,7 +16,7 @@ import numpy as np
 epfl_dir = os.environ["EPFL_DIR"]
 home = os.environ["HOME"]
 other_repos = ['/custom', '/.password-store']
-exclude_patterns = ['project/renku-repos', 'mlbd']
+exclude_patterns = ['project/renku-repos', 'mlbd', 'client-configuration/repos/']
 
 # Colors
 HEADER = '\033[95m'
