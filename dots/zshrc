@@ -67,7 +67,7 @@ alias pms="sudo pacman -S $1"
 alias pmr="sudo pacman -Rns $1"
 alias pmy="sudo pacman -Sy"
 alias pmu="sudo pacman -Syu"
-alias yayu="yay -Syua"
+alias paruu="paru -Syu"
 ## GNU
 ### Dirs and Files
 alias ..='cd ..'
