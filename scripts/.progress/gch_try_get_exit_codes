@@ -1,0 +1,170 @@
+#!/usr/bin/python
+# Script that automatically checks (and pull if possible) all git repos. The script
+# search recursively in epfl_dir and add all other_repos to the list of repos to check.
+# Add pattern (substring) in exclude_pattern to exclude repos.
+#
+# Inspired from https://github.com/Gorzen/.files/blob/master/.local/bin/dirty-git-epfl
+
+import os
+import subprocess as sp
+import multiprocessing
+import readchar
+import re
+import numpy as np
+
+# Repo variables
+epfl_dir = os.environ["EPFL_DIR"]
+home = os.environ["HOME"]
+other_repos = ['/custom', '/.password-store']
+exclude_patterns = ['project/renku-repos', 'mlbd', 'client-configuration/repos/']
+
+# Colors
+HEADER = '\033[95m'
+OKBLUE = '\033[94m'
+OKCYAN = '\033[96m'
+OKGREEN = '\033[92m'
+WARNING = '\033[93m'
+FAIL = '\033[91m'
+ENDC = '\033[0m'
+BOLD = '\033[1m'
+UNDERLINE = '\033[4m'
+
+failed = []
+def run_command(cmd, job_success, job_id, cwd="."):
+    stdout, stderr = sp.Popen(
+        cmd.split(" "), stdout=sp.PIPE, stderr=sp.PIPE, cwd=cwd
+    ).communicate()
+    if stderr: job_success[job_id] = 1
+
+    return stdout.decode("utf-8")
+
+
+def get_repos():
+    # Find repos
+    stream = os.popen(f"find {epfl_dir} -name '.git' -type d")
+    output = stream.read().split('\n')
+    repos = list(filter(None, output))
+
+    # Remove "/.git" from repo path
+    repos = [repo[:-4] for repo in repos]
+
+    # Add permanent repos outside EPFL
+    repos = repos + [home+path for path in other_repos]
+
+    return filter_repos(repos)
+
+
+def filter_repos(repos):
+    # Filter non-directory repos
+    repos = list(filter(os.path.isdir, repos))
+
+    # Remove repo with matching pattern in exclude_patterns
+    repos = list(filter(lambda repo: np.all([pat not in repo for pat in exclude_patterns]), repos))
+
+    return repos
+
+
+def fetch_repos(repos):
+    jobs = []
+    job_success = np.zeros(len(repos))
+    for i, repo in enumerate(repos):
+        process = multiprocessing.Process(target=run_command, args=("git fetch", job_success, i, repo))
+        jobs.append(process)
+
+    # Start the threads (i.e. calculate the random number lists)
+    for j in jobs:
+        j.start()
+
+    # Ensure all of the threads have finished
+    printProgressBar(0, len(jobs))
+    for i, j in enumerate(jobs):
+        j.join()
+        printProgressBar(i + 1, len(jobs))
+
+    print([j.exitcode for j in jobs])
+    print(job_success)
+
+
+# Print iterations progress
+def printProgressBar(iteration, total, length=60, fill="█"):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        length      - Optional  : character length of bar (Int)
+        fill        - Optional  : bar fill character (Str)
+    """
+    percent = "%.1f" % (100 * iteration / float(total))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + "-" * (length - filledLength)
+    print("\rProgress: |%s| %s%% Complete" % (bar, percent), end="\r")
+    # Print New Line on Complete
+    if iteration == total:
+        print('\n')
+
+
+def print_dirty_repos(repos):
+    dirty_report = []
+    # Longest repo string length
+    max_length = len(max(repos, key=len))
+    dirty = False
+
+    for repo in repos:
+        base_epfl = os.environ['EPFL_DIR'].split('/')[-1]
+        repo_short_name = re.sub(os.environ['HOME']+'/', '', repo)
+        repo_short_name = (base_epfl if repo_short_name.endswith(base_epfl+'/')
+                            else re.sub('^.*'+base_epfl+'/', '',
+                            repo_short_name))
+
+        git_branch = run_command("git branch -vv --color=always", cwd=repo)
+        git_status = run_command("git -c color.status=always status -sb", repo)
+
+        # Check status
+        dirty_status = git_status.count("\n") > 1
+        dirty_ahead = "ahead" in git_branch
+        dirty_behind = "behind" in git_branch
+        dirty_branch = dirty_behind or dirty_ahead
+        dirty_repo = dirty_status or dirty_branch
+
+        # Pull if just behind remote
+        pulled = False
+        if dirty_behind and not dirty_ahead and not dirty_status:
+            print(f"Pull {FAIL}{BOLD}{UNDERLINE}{repo_short_name}:{ENDC}? [y/n]:", end=' ', flush=True)
+            key_read = readchar.readkey()
+            print(key_read)
+            if key_read == 'y' or key_read == 'Y':
+                print('Pulling ...')
+                stream = sp.Popen(f"cd {repo} && git pull", shell=True)
+                pulled = stream.wait() == 0
+                pulled and print()
+        dirty_repo = dirty_repo and not pulled
+        dirty = dirty or dirty_repo
+
+        # Update dirty report
+        if dirty_repo:
+            dirty_report.append(f"{FAIL}{BOLD}{UNDERLINE}{repo_short_name}:{ENDC}")
+
+        if dirty_branch:
+            dirty_report.append(git_branch)
+
+        if dirty_status:
+            dirty_report.append(git_status)
+
+    if not dirty:
+        print("All clean!")
+    else:
+        print("Dirty report")
+        print('\n'.join(dirty_report))
+
+
+if __name__ == "__main__":
+    repos = get_repos()
+    num_repo_fetched = fetch_repos(repos)
+    if num_repo_fetched < len(repos):
+        if num_repo_fetched == 0:
+            print("Failed to fetch repos.")
+        else:
+            print(f"Only {num_repo_fetched}/{len(repos)} repositories were fetched.")
+    print_dirty_repos(repos)
+
