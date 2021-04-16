@@ -6,11 +6,7 @@
 #											 with the bash-bang for env already written.
 
 file="${2-$1}"
-if [ -e "$file" ]
-then
-	echo "File $2 already exits"
-	exit 1
-fi
+[ -e "$file" ] && echo "File $2 already exits" && exit 1
 
 touch "$file"
 chmod +x "$file"

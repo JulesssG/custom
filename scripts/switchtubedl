@@ -32,13 +32,18 @@ page = session.get(page_url).text
 # Get name of video if needed
 if len(sys.argv) == 2 or (len(sys.argv) == 3 and sys.argv[2] == ''):
     full_block_name_pattern = re.compile(r"hgroup.*title.*<h2>(.*)</h2>.*</hgroup>", re.DOTALL)
-    block = full_block_name_pattern.findall(page)[0]
-    fname = re.sub(r'<a href.*</a>', '', block).strip(' \r\n,')
+    name_blocks = full_block_name_pattern.findall(page)
+    if len(name_blocks) > 0:
+        block = name_blocks[0]
+        fname = re.sub(r'<a href.*</a>', '', block).strip(' \r\n,')
+        print('Name:', fname)
+    else:
+        fname = 'output_'+datetime.now().strftime('%Y-%m-%d_%T')
     fname += '.mp4' # Assuming all video on switch are mp4
-    print('Name:', fname)
 else:
     fname = sys.argv[2]
 vid_search = re.search(r"<source [^>]* src=\"([^\"]*1080[^\"]*)\"", page)
+print(page)
 if vid_search is None:
     vid_search = re.search(r"src=\"([^\"]*)\" property=\"media:video\"", page)
 vid_url = vid_search.group(1)
