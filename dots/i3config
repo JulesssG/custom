@@ -128,6 +128,7 @@ bindsym $mod+o						[con_id="__focused__" instance="^(?!dropdown_).*$"] resize g
 
 bindsym $mod+p						[con_id="__focused__" instance="^(?!dropdown_).*$"] resize grow width 10 px
 bindsym $mod+Shift+p			exec --no-startup-id "passmenusec ; i3-msg 'workspace back_and_forth' ; i3-msg 'workspace back_and_forth'"
+bindsym $mod+Ctrl+p				exec --no-startup-id "cd $HOME/.password-store && find . -type f -not -path './.git/*' | sed -e 's:^\./::' -e 's/\.gpg$//' | dmenu | cut -d/ -f2 | tr -d '\n' | xsel -ib ; i3-msg 'workspace back_and_forth' ; i3-msg 'workspace back_and_forth'"
 
 bindsym $mod+a						split v
 bindsym $mod+Shift+a			split h
