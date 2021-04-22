@@ -43,7 +43,6 @@ if len(sys.argv) == 2 or (len(sys.argv) == 3 and sys.argv[2] == ''):
 else:
     fname = sys.argv[2]
 vid_search = re.search(r"<source [^>]* src=\"([^\"]*1080[^\"]*)\"", page)
-print(page)
 if vid_search is None:
     vid_search = re.search(r"src=\"([^\"]*)\" property=\"media:video\"", page)
 vid_url = vid_search.group(1)
