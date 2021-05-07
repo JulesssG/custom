@@ -131,7 +131,8 @@ def print_dirty_repos(repos):
                 print('Pulling ...')
                 stream = sp.Popen(f"cd {repo} && git pull", shell=True)
                 pulled = stream.wait() == 0
-                pulled and print()
+                pulled
+            print()
         dirty_repo = dirty_repo and not pulled
         dirty = dirty or dirty_repo
 
