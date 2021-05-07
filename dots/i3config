@@ -62,6 +62,9 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
+## Startup scripts
+exec "$HOME/.config/autostart/check-update"
+
 ## Special Key Bindings ##
 # bindsym Ctrl+D [con_id="__focused__" instance="^(?dropdown_).*$"] nop
 bindsym $mod+Shift+minus move scratchpad

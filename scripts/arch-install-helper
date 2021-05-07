@@ -4,7 +4,7 @@ set -e
 
 ## Package installation
 pacman -Sy
-pacman -S openssh sshpass pass openconnect mlocate dmenu rxvt-unicode urxvt-perls xorg-xinit xorg-xrandr arandr xorg-xev xorg-xmodmap acpilight xorg-xclipboard xsel i3-gaps i3blocks gsimplecal zsh-completions ttf-droid ttf-font-awesome ctags curl wget imagemagick sxiv jq zathura zathura-pdf-mupdf ghostscript pdfgrep pdftk feh pandoc texlive-most scrot deepin-screenshot pulseaudio pulseaudio-bluetooth alsa-utils pavucontrol bluez bluez-utils blueberry mpv gcc cmake python bpython firefox deluge unclutter unrar zip unzip gzip tar redshift tree ranger w3m ffmpegthumbnailer fzf dunst dosfstools dmidecode cronie clipmenu sddm qt5-quickcontrols qt5-graphicaleffects --needed --noconfirm
+pacman -S openssh sshpass pass openconnect mlocate dmenu rxvt-unicode urxvt-perls xorg-xinit xorg-xrandr arandr xorg-xev xorg-xmodmap acpilight xorg-xclipboard xsel i3-gaps i3blocks gsimplecal zsh-completions ttf-droid ttf-font-awesome ctags curl wget imagemagick sxiv jq zathura zathura-pdf-mupdf ghostscript pdfgrep pdftk feh pandoc texlive-most scrot deepin-screenshot pulseaudio pulseaudio-bluetooth alsa-utils pavucontrol bluez bluez-utils blueberry mpv gcc cmake python bpython firefox deluge unclutter unrar zip unzip gzip tar redshift tree ranger w3m ffmpegthumbnailer fzf dunst dunstify dosfstools dmidecode cronie clipmenu sddm qt5-quickcontrols qt5-graphicaleffects --needed --noconfirm
 
 export HOME='/home/jules'
 source $HOME/custom/dots/profile
@@ -77,8 +77,8 @@ for i in {1..${#homenames[@]}}; do
 done
 
 ## Config files in .config
-confignames=('archey3/archey3.conf' 'dunst/dunstrc' 'i3/config' 'i3blocks' 'ranger/rc.conf' 'ranger/rifle.conf' 'ranger/scope.sh' 'zathura/zathurarc' 'bpython/config' 'mpv/mpv.conf' 'mpv/input.conf')
-dotsnames=('archey3.conf' 'dunstrc' 'i3config' 'i3blocks' 'ranger-rc.conf' 'ranger-rifle.conf' 'ranger-scope.sh' 'zathurarc' 'bpython-config' 'mpv.conf' 'mpv-input.conf')
+confignames=('archey3/archey3.conf' 'dunst/dunstrc' 'i3/config' 'i3blocks' 'ranger/rc.conf' 'ranger/rifle.conf' 'ranger/scope.sh' 'zathura/zathurarc' 'bpython/config' 'mpv/mpv.conf' 'mpv/input.conf' 'autostart/check-update')
+dotsnames=('archey3.conf' 'dunstrc' 'i3config' 'i3blocks' 'ranger-rc.conf' 'ranger-rifle.conf' 'ranger-scope.sh' 'zathurarc' 'bpython-config' 'mpv.conf' 'mpv-input.conf' 'check-update')
 for i in {1..${#confignames[@]}}; do
 	c="$HOME/.config/$confignames[$i]"
 	d="$DOTS_PATH/$dotsnames[$i]"

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+MIN_DAYS_WARNING=15
+
+last_update=$(tail -n1 /var/log/pacman.log | cut -d' ' -f1 | tr -d '[]' | cut -dT -f1)
+let last_update_diff=($(date +%s -d $(date -I))-$(date +%s -d $last_update))/86400
+
+if [ $last_update_diff -gt $MIN_DAYS_WARNING ]; then
+	dunstify "$last_update_diff days since last update !"
+fi
