@@ -1,0 +1,21 @@
+#!/bin/bash
+
+pid=$(ps aux | grep '/usr/bin/openconnect' | grep -v 'grep' | awk '{print $2}' | sed 's/ \+//g')
+if [[ -z $pid ]] && [ $1 = 'off' -o $# -eq 0 ]
+then
+	sudo kill $pid
+elif [  -a -z $pid ] || [ $1 = 'on' -o $# -eq 0 ]
+then
+	sudo -u jules pass show epfl.ch/gottraux | sudo /usr/bin/openconnect -b vpn.epfl.ch -u gottraux --passwd-on-stdin |
+  while IFS= read -r line
+  do
+    if [[ "$line" =~ '^Error: any valid prefix is expected.*' ]]; then
+			echo 'Success'
+			exit
+		fi
+  done
+elif [ $# -ne 0 ]
+then
+	echo "Illegal arguments"
+	exit 1
+fi
