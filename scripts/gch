@@ -140,11 +140,11 @@ def print_dirty_repos(repos):
         if dirty_repo:
             dirty_report.append(f"{FAIL}{BOLD}{UNDERLINE}{repo_short_name}:{ENDC}")
 
-        if dirty_branch:
-            dirty_report.append(git_branch)
+            if dirty_branch:
+                dirty_report.append(git_branch)
 
-        if dirty_status:
-            dirty_report.append(git_status)
+            if dirty_status:
+                dirty_report.append(git_status)
 
     if not dirty:
         print("All clean!")
