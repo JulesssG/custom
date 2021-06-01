@@ -127,14 +127,16 @@ endif
 
 " Mappings
 	" Misc
+	nnoremap		<leader>w :w<CR>
 	map					Q <Nop>
 	nnoremap 		<C-s> <Nop>
 	noremap			0 ^
 	noremap 		^ 0
+	nnoremap		<leader>0 ^
 	nnoremap		n	nzzzv
-	nnoremap		<leader>s :shell<CR>
-	noremap			<leader>ac :setlocal spell!<CR>
-	nnoremap		<leader>h :nohlsearch<CR>
+	nnoremap		N	Nzzzv
+	noremap			<leader>s :setlocal spell!<CR>
+	nnoremap		<leader>h :set invhlsearch<CR>
 	nnoremap		<leader>i :b#<CR>
 	nnoremap		<leader>ra :call RangerExplorer()<CR>
 	"" Latex
