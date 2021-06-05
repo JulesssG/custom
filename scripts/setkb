@@ -16,3 +16,6 @@ xmodmap -e 'keycode  47 = eacute slash eacute odiaeresis bar dead_doubleacute de
 xmodmap -e 'keycode  48 = agrave asciitilde agrave adiaeresis braceleft'
 xmodmap -e 'keycode 117 = Prior NoSymbol Next NoSymbol Next'
 xmodmap -e 'keycode 112 = Next NoSymbol Prior NoSymbol Prior'
+
+xmodmap -e 'keycode	 13 = 4 ccedilla 4 ccedilla braceleft dollar braceleft dollar ccedilla braceleft dollar'
+xmodmap -e 'keycode  14 = 5 percent 5 percent braceright threeeighths braceright threeeighths 5 percent braceright threeeighths'

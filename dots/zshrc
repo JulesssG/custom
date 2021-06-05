@@ -197,9 +197,6 @@ alias wget='wget --hsts-file $HOME/.cache/wget-hsts'
 
 # Functions
 ## Misc
-function nt() {
-	urxvt -cd $(pwd) & disown &>/dev/null
-}
 function stopwatch(){
   date1=`date +%s`;
    while true; do
