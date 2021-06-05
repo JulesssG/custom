@@ -26,7 +26,9 @@ then
 	pactl set-sink-mute $sink 1
 fi
 
-if [ "$(pacmd list-sinks | grep mute | cut -d' ' -f2)" = 'yes' ];then
+muted="$(pactl list sinks | grep -A8 "Sink #$active_sink" | grep 'Mute' | sed 's/^.*Mute: \(\w\+\).*$/\1/')"
+echo $muted
+if [ $muted = 'yes' ];then
 	dunstify -u normal -r 30003 -i $ICON "mute on"
 else
 	dunstify -u normal -r 30003 -i $ICON "mute off"
