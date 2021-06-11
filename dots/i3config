@@ -94,8 +94,9 @@ bindsym XF86MonBrightnessDown	exec --no-startup-id "$SCRIPTS_PATH/brightness -"
 bindsym XF86MonBrightnessUp		exec --no-startup-id "$SCRIPTS_PATH/brightness +"
 bindsym $mod+XF86Display			exec --no-startup-id "$SCRIPTS_PATH/screenlayout/hdmi-same.sh ; outhdmi"
 bindsym F9										exec --no-startup-id "$SCRIPTS_PATH/wifi --restart"
-bindsym F10			      				exec --no-startup-id "$SCRIPTS_PATH/prompt 'Do you really want to reboot?' 'systemctl reboot'"
-bindsym F11          					exec --no-startup-id "$SCRIPTS_PATH/prompt 'Do you really want to power off?' 'systemctl poweroff'"
+bindsym F10			      				exec --no-startup-id "$SCRIPTS_PATH/prompt 'Do you really want to suspend?' 'systemctl suspend'"
+bindsym F11			      				exec --no-startup-id "$SCRIPTS_PATH/prompt 'Do you really want to reboot?' 'systemctl reboot'"
+bindsym F12          					exec --no-startup-id "$SCRIPTS_PATH/prompt 'Do you really want to power off?' 'systemctl poweroff'"
 
 #bindsym XF86Tools
 bindsym XF86Search						exec --no-startup-id "systemctl suspend"
