@@ -165,7 +165,7 @@ bindsym $mod+Shift+k 			move up 60
 bindsym $mod+l						exec --no-startup-id "$SCRIPTS_PATH/i3focus right"
 bindsym $mod++Shift+l			move right 50
 
-#bindsym $mod+y
+bindsym $mod+y						exec 	--no-startup-id signal-desktop
 #bindsym $mod++Shift+y
 
 bindsym $mod+x						exec --no-startup-id "urxvt -e htop"
